@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Smart Transit — Dhaka Multimodal Transit</title>
+    <!-- Inter Google Font -->
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet" />
+    <!-- Material Symbols Outlined -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
+    <!-- Bootstrap 5 CSS & Bootstrap Icons -->
+    <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='css/auth.css') }}" rel="stylesheet" />
+</head>
+<body class="bg-light text-dark d-flex flex-column min-vh-100 font-sans">
+
+    <!-- Top Navigation Header -->
+    <header class="w-100 bg-white border-bottom sticky-top">
+        <div class="container-fluid max-w-7xl px-3 px-sm-4 h-64 d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center gap-3">
+                <div class="logo-box">
+                    <svg class="w-100 h-100" fill="none" viewBox="0 0 52 52" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 36C12 36 17 20 25 20C33 20 31 40 39 24" stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.5"></path>
+                        <circle cx="12" cy="36" fill="#FFFFFF" r="3.5"></circle>
+                        <circle cx="25" cy="20" fill="#2563EB" r="3.5"></circle>
+                        <circle cx="39" cy="24" fill="#000000" r="4.5" stroke="#FFFFFF" stroke-width="2.5"></circle>
+                        <path d="M36 11L37 13.8L40 15L37 16.2L36 19L35 16.2L32 15L35 13.8L36 11Z" fill="#FFFFFF"></path>
+                    </svg>
+                </div>
+                <div>
+                    <span class="fs-6 fw-black text-black d-flex align-items-center gap-1">
+                        SmartTransit <span class="badge bg-black text-white px-2 py-1 lh-1 text-uppercase fw-bold rounded-1" style="font-size: 10px; letter-spacing: 0.1em;">Dhaka</span>
+                    </span>
+                </div>
+            </div>
+            <div class="d-flex align-items-center gap-3">
+                <div class="d-none d-sm-flex align-items-center gap-2 px-3 py-1 rounded-pill bg-light border text-dark fw-semibold" style="font-size: 12px;">
+                    <span class="pulse-dot"></span>
+                    <span>MRT Line 6</span>
+                </div>
+                <button aria-label="Network status" class="nav-icon-btn d-flex align-items-center justify-content-center">
+                    <span class="material-symbols-outlined fs-5">sensors</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-grow-1 w-100 max-w-7xl mx-auto d-flex align-items-center justify-content-center p-3 p-sm-4 p-lg-5">
+        <div class="row w-100 justify-content-center align-items-stretch g-4 g-lg-5">
+            <!-- Left Canvas -->
+            <section class="col-lg-6 d-none d-lg-flex flex-column justify-content-between p-4 p-xl-5 bg-white rounded-4 border shadow-sm position-relative overflow-hidden">
+                <div>
+                    <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill bg-black text-white text-uppercase fw-bold mb-4" style="font-size: 12px; letter-spacing: 0.05em;">
+                        <i class="bi bi-cpu-fill text-primary"></i>
+                        <span>AI Multimodal Mobility</span>
+                    </div>
+                    <h1 class="display-6 fw-black text-dark mb-3 lh-sm" style="letter-spacing: -0.03em;">
+                        AI-Powered Multimodal Journey Planning for Dhaka
+                    </h1>
+                    <p class="text-muted fw-normal" style="font-size: 16px;">
+                        Estimated multimodal route planning across MRT Line 6, digital buses, and rapid feeder transit.
+                    </p>
+                </div>
+                <!-- Illustration Image Container -->
+                <div class="my-4 rounded-4 border bg-light p-2 d-flex align-items-center justify-content-center overflow-hidden">
+                    <img alt="Smart Transit Dhaka Minimal Illustration" class="img-fluid rounded-3" style="max-height: 340px; transition: transform 0.3s ease;" src="https://lh3.googleusercontent.com/aida/AEtjO1U1mdUNrq2oQIhm0xnPgpfcdP5FPePtrwZm5bdzCGjKBIvthXlq6gDFShhLJUJq9yNT_LWvf0HcKR3g7YwMFJMhiCCEWQwuqnKNg3PkmuGFMd3wA22I92TDRfcPfUYRlxaSyIMmOc2Q7guSfOSEkqGi5fvAfyvOSKyoUe4y26LavYaYTVZgenfKv_aghYi-z77MLOUmKltO8eacw42o-kBWdSCPGZpQ4hEKbKYAonh47f_c7biaqewglEQ" />
+                </div>
+                <!-- Trust Metrics -->
+                <div class="row g-2 pt-4 border-top">
+                    <div class="col-4">
+                        <div class="p-3 bg-light rounded-3 border h-100">
+                            <p class="fs-5 fw-black text-black mb-0 lh-1">16 Stns</p>
+                            <p class="text-muted fw-medium mb-0 mt-1" style="font-size: 12px;">MRT-6 Data Sync</p>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="p-3 bg-light rounded-3 border h-100">
+                            <p class="fs-5 fw-black text-black mb-0 lh-1">Smart</p>
+                            <p class="text-muted fw-medium mb-0 mt-1" style="font-size: 12px;">AI Multimodal</p>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="p-3 bg-light rounded-3 border h-100">
+                            <p class="fs-5 fw-black text-primary mb-0 lh-1">Fast</p>
+                            <p class="text-muted fw-medium mb-0 mt-1" style="font-size: 12px;">Route Generation</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Right Canvas (Auth Card) -->
+            <section class="col-12 col-md-8 col-lg-6 d-flex align-items-center justify-content-center">
+                <div class="w-100 bg-white rounded-4 border p-4 p-sm-5 shadow-sm max-w-auth mx-auto">
+                    <!-- Branding -->
+                    <div class="d-flex flex-column align-items-center text-center mb-4">
+                        <div class="mb-2 d-flex align-items-center justify-content-center" style="height: 56px;">
+                            <img alt="Smart Transit Minimal Monochrome Logo" class="img-fluid h-100" src="https://lh3.googleusercontent.com/aida/AEtjO1VElE25e92syAuSdUP5MOe39p8U_r5gjozL4spVZYxJSOr-iBOwk16pZcDYFBRP3i0dZI-Hc3hce3F27RM2Nicvv4AOSW82VM4PqG2T841HIN66Hlv6SpJdmgYZUNH9KugA8hOTnk5pGR6Y2-8AZPJW6lE-ObVmOuI3BjgpWE4BfAKiPySGGSrjNyix41kEbMifpfv_C56UHKQQpnpla-XNZ_Lw7zDEQEEFsPYnOnA3IsuIIJVtZXERilM" />
+                        </div>
+                        <h2 class="fs-4 fw-black text-dark mb-1 lh-sm" style="letter-spacing: -0.03em;">
+                            Travel Smarter Across Dhaka
+                        </h2>
+                        <p class="text-muted fw-medium mb-0" style="font-size: 14px;">
+                            Log in or create an account to start planning better journeys.
+                        </p>
+                    </div>
+
+                    <!-- Dual Action Tabs -->
+                    <div class="row g-2 p-1 bg-light rounded-3 border mb-4 mx-0" role="tablist">
+                        <div class="col-6 p-0">
+                            <button id="tab-login-btn" onclick="switchToTab('login')" class="btn w-100 btn-black fw-bold py-2 rounded-2" type="button" aria-selected="true">Log In</button>
+                        </div>
+                        <div class="col-6 p-0">
+                            <button id="tab-signup-btn" onclick="switchToTab('signup')" class="btn w-100 btn-light text-dark fw-bold py-2 rounded-2" type="button" aria-selected="false">Sign Up</button>
+                        </div>
+                    </div>
+
+                    <!-- Alert Box -->
+                    <div id="auth-alert" class="d-none alert border fw-semibold d-flex align-items-center gap-2 py-2 px-3 mb-4 rounded-3" style="font-size: 12px;"></div>
+
+                    <!-- 1. LOGIN FORM -->
+                    <form id="login-form" novalidate onsubmit="handleAuthSubmit(event, 'login')">
+                        <div class="mb-3">
+                            <h3 class="fs-6 fw-extrabold text-dark mb-0">Welcome Back</h3>
+                            <p class="text-muted mb-0" style="font-size: 12px;">Log in to continue to Smart Transit.</p>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="mb-3">
+                            <label for="login-email" class="form-label text-dark fw-bold text-uppercase mb-1" style="font-size: 11px; letter-spacing: 0.05em;">Email Address</label>
+                            <div class="position-relative">
+                                <span class="position-absolute top-50 start-0 translate-middle-y ps-3 text-muted">
+                                    <i class="bi bi-envelope"></i>
+                                </span>
+                                <input type="email" id="login-email" class="form-control bg-white ps-5 text-dark" placeholder="example@gmail.com" autocomplete="email" />
+                            </div>
+                            <p id="login-email-err" class="d-none text-danger fw-medium mt-1 mb-0" style="font-size: 12px;"></p>
+                        </div>
+
+                        <!-- Password -->
+                        <div class="mb-3">
+                            <label for="login-password" class="form-label text-dark fw-bold text-uppercase mb-1" style="font-size: 11px; letter-spacing: 0.05em;">Password</label>
+                            <div class="position-relative">
+                                <span class="position-absolute top-50 start-0 translate-middle-y ps-3 text-muted">
+                                    <i class="bi bi-shield-lock"></i>
+                                </span>
+                                <input type="password" id="login-password" class="form-control bg-white ps-5 pe-5 text-dark" placeholder="Enter your password" autocomplete="current-password" />
+                                <button type="button" class="btn position-absolute top-50 end-0 translate-middle-y pe-3 text-muted border-0 shadow-none" onclick="togglePasswordVisibility('login-password', this)" aria-label="Toggle password visibility">
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                            </div>
+                            <p id="login-password-err" class="d-none text-danger fw-medium mt-1 mb-0" style="font-size: 12px;"></p>
+                        </div>
+
+                        <!-- Remember & Forgot Password -->
+                        <div class="d-flex align-items-center justify-content-between mb-4">
+                            <div class="form-check m-0">
+                                <input class="form-check-input border-secondary" type="checkbox" id="login-remember">
+                                <label class="form-check-label text-muted fw-medium" for="login-remember" style="font-size: 12px; cursor: pointer;">
+                                    Remember me
+                                </label>
+                            </div>
+                            <a href="javascript:void(0)" onclick="handleForgotPassword()" class="text-dark fw-semibold text-decoration-none border-bottom border-dark pb-0" style="font-size: 12px;">Forgot Password?</a>
+                        </div>
+
+                        <!-- Submit CTA -->
+                        <button type="submit" id="login-submit-btn" class="btn btn-black w-100 py-3 fw-bold d-flex align-items-center justify-content-center gap-2 rounded-3">
+                            <span>Log In</span>
+                            <i class="bi bi-arrow-right fw-bold"></i>
+                        </button>
+
+                        <div class="text-center mt-3">
+                            <p class="text-muted mb-0" style="font-size: 12px;">
+                                Don't have an account? 
+                                <button type="button" class="btn btn-link p-0 text-dark fw-bold text-decoration-none ms-1 border-0" onclick="switchToTab('signup')">Sign Up</button>
+                            </p>
+                        </div>
+                    </form>
+
+                    <!-- 2. SIGN UP FORM -->
+                    <form id="signup-form" class="d-none" novalidate onsubmit="handleAuthSubmit(event, 'signup')">
+                        <div class="mb-3">
+                            <h3 class="fs-6 fw-extrabold text-dark mb-0">Create Your Account</h3>
+                            <p class="text-muted mb-0" style="font-size: 12px;">Join Smart Transit and start planning smarter journeys.</p>
+                        </div>
+
+                        <!-- Full Name -->
+                        <div class="mb-3">
+                            <label for="signup-name" class="form-label text-dark fw-bold text-uppercase mb-1" style="font-size: 11px; letter-spacing: 0.05em;">Full Name</label>
+                            <div class="position-relative">
+                                <span class="position-absolute top-50 start-0 translate-middle-y ps-3 text-muted">
+                                    <i class="bi bi-person"></i>
+                                </span>
+                                <input type="text" id="signup-name" class="form-control bg-white ps-5 text-dark" placeholder="Enter your full name" autocomplete="name" />
+                            </div>
+                            <p id="signup-name-err" class="d-none text-danger fw-medium mt-1 mb-0" style="font-size: 12px;"></p>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="mb-3">
+                            <label for="signup-email" class="form-label text-dark fw-bold text-uppercase mb-1" style="font-size: 11px; letter-spacing: 0.05em;">Email Address</label>
+                            <div class="position-relative">
+                                <span class="position-absolute top-50 start-0 translate-middle-y ps-3 text-muted">
+                                    <i class="bi bi-envelope"></i>
+                                </span>
+                                <input type="email" id="signup-email" class="form-control bg-white ps-5 text-dark" placeholder="example@gmail.com" autocomplete="email" />
+                            </div>
+                            <p id="signup-email-err" class="d-none text-danger fw-medium mt-1 mb-0" style="font-size: 12px;"></p>
+                        </div>
+
+                        <!-- Password -->
+                        <div class="mb-3">
+                            <label for="signup-password" class="form-label text-dark fw-bold text-uppercase mb-1" style="font-size: 11px; letter-spacing: 0.05em;">Password</label>
+                            <div class="position-relative">
+                                <span class="position-absolute top-50 start-0 translate-middle-y ps-3 text-muted">
+                                    <i class="bi bi-lock"></i>
+                                </span>
+                                <input type="password" id="signup-password" class="form-control bg-white ps-5 pe-5 text-dark" placeholder="Create a password" />
+                                <button type="button" class="btn position-absolute top-50 end-0 translate-middle-y pe-3 text-muted border-0 shadow-none" onclick="togglePasswordVisibility('signup-password', this)">
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                            </div>
+                            <p id="signup-password-err" class="d-none text-danger fw-medium mt-1 mb-0" style="font-size: 12px;"></p>
+                        </div>
+
+                        <!-- Confirm Password -->
+                        <div class="mb-3">
+                            <label for="signup-confirm-password" class="form-label text-dark fw-bold text-uppercase mb-1" style="font-size: 11px; letter-spacing: 0.05em;">Confirm Password</label>
+                            <div class="position-relative">
+                                <span class="position-absolute top-50 start-0 translate-middle-y ps-3 text-muted">
+                                    <i class="bi bi-shield-check"></i>
+                                </span>
+                                <input type="password" id="signup-confirm-password" class="form-control bg-white ps-5 pe-5 text-dark" placeholder="Re-enter your password" />
+                                <button type="button" class="btn position-absolute top-50 end-0 translate-middle-y pe-3 text-muted border-0 shadow-none" onclick="togglePasswordVisibility('signup-confirm-password', this)">
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                            </div>
+                            <p id="signup-confirm-err" class="d-none text-danger fw-medium mt-1 mb-0" style="font-size: 12px;"></p>
+                        </div>
+
+                        <!-- Terms Checkbox -->
+                        <div class="mb-4">
+                            <div class="form-check m-0">
+                                <input class="form-check-input border-secondary mt-1" type="checkbox" id="signup-terms">
+                                <label class="form-check-label text-muted lh-sm" for="signup-terms" style="font-size: 12px; cursor: pointer;">
+                                    I agree to the <a href="javascript:void(0)" class="text-dark fw-semibold text-decoration-underline">Terms and Privacy Policy</a>.
+                                </label>
+                            </div>
+                            <p id="signup-terms-err" class="d-none text-danger fw-medium mt-1 mb-0" style="font-size: 12px;"></p>
+                        </div>
+
+                        <!-- Submit CTA -->
+                        <button type="submit" id="signup-submit-btn" class="btn btn-black w-100 py-3 fw-bold d-flex align-items-center justify-content-center gap-2 rounded-3">
+                            <span>Create Account</span>
+                            <i class="bi bi-arrow-right fw-bold"></i>
+                        </button>
+
+                        <div class="text-center mt-3">
+                            <p class="text-muted mb-0" style="font-size: 12px;">
+                                Already have an account? 
+                                <button type="button" class="btn btn-link p-0 text-dark fw-bold text-decoration-none ms-1 border-0" onclick="switchToTab('login')">Log In</button>
+                            </p>
+                        </div>
+                    </form>
+
+                    <!-- Footer Note -->
+                    <div class="mt-4 pt-3 border-top d-flex align-items-center justify-content-between text-muted" style="font-size: 12px;">
+                        <span class="d-flex align-items-center gap-1 fw-medium">
+                            <i class="bi bi-credit-card-2-front text-dark"></i>
+                            Dhaka Rapid Pass sync
+                        </span>
+                        <a href="javascript:void(0)" onclick="alert('Rapid Pass / MRT pass integration can be activated after logging in to your Journey Planner.')" class="fw-bold text-dark text-decoration-none border-bottom border-dark pb-0">Learn More</a>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="w-100 bg-white border-top py-3 text-muted" style="font-size: 12px;">
+        <div class="container-fluid max-w-7xl px-4 d-flex flex-column flex-sm-row align-items-center justify-content-between gap-2">
+            <div class="d-flex align-items-center gap-2">
+                <span class="d-inline-block rounded-circle bg-black" style="width: 8px; height: 8px;"></span>
+                <span class="fw-medium">Estimated Multimodal Routes</span>
+            </div>
+            <p class="fw-medium m-0">© Smart Transit Dhaka. Minimal Multimodal Engine.</p>
+        </div>
+    </footer>
+
+    <!-- MODAL OVERLAY (Forgot Password & Reset Password) -->
+    <div id="auth-modal-overlay" class="position-fixed top-0 start-0 w-100 h-100 d-none align-items-center justify-content-center p-3 p-sm-4" style="background-color: rgba(0,0,0,0.4); backdrop-filter: blur(4px); z-index: 1050; opacity: 0; transition: opacity 0.3s ease;">
+        
+        <!-- FORGOT PASSWORD MODAL -->
+        <div id="forgot-password-modal" class="bg-white border rounded-4 p-4 p-sm-5 shadow-lg position-relative w-100 d-none mx-auto" style="max-width: 420px; transform: scale(0.95); transition: transform 0.3s ease;">
+            <!-- Brand & Close -->
+            <div class="d-flex align-items-center justify-content-between mb-4">
+                <div class="d-inline-flex align-items-center gap-2 px-2 py-1 rounded-pill bg-light border text-dark" style="font-size: 11px; letter-spacing: 0.02em;">
+                    <i class="bi bi-shield-lock-fill text-primary"></i>
+                    <span class="fw-bold">SmartTransit Dhaka · Secure Auth</span>
+                </div>
+                <button type="button" class="btn-close shadow-none" aria-label="Close" onclick="closeAuthModal()"></button>
+            </div>
+            
+            <!-- Icon & Headers -->
+            <div class="text-center mb-4">
+                <div class="d-inline-flex align-items-center justify-content-center rounded-4 bg-light border text-dark mb-3 position-relative" style="width: 56px; height: 56px;">
+                    <span class="material-symbols-outlined fs-2">lock_reset</span>
+                    <div class="position-absolute bottom-0 end-0 rounded-circle bg-black text-white d-flex align-items-center justify-content-center" style="width: 20px; height: 20px; transform: translate(25%, 25%);">
+                        <span class="material-symbols-outlined" style="font-size: 12px;">key</span>
+                    </div>
+                </div>
+                <h2 class="fs-5 fw-bold text-dark mb-1" style="letter-spacing: -0.02em;">Forgot Password</h2>
+                <p class="text-muted fw-medium mb-0" style="font-size: 14px;">Enter your registered email to receive a reset link.</p>
+            </div>
+
+            <!-- Feedback Alerts -->
+            <div id="forgot-feedback-success" class="d-none alert bg-light border-0 d-flex align-items-start gap-2 p-3 mb-3 rounded-3">
+                <i class="bi bi-check-circle-fill text-black mt-1"></i>
+                <div>
+                    <p class="fw-bold text-dark mb-0" style="font-size: 13px;">Instructions Dispatched</p>
+                    <p class="text-muted mb-0 lh-sm mt-1" style="font-size: 13px;" id="forgot-success-text">If an account exists for this email, check your inbox or spam folder.</p>
+                </div>
+            </div>
+            <div id="forgot-feedback-error" class="d-none alert bg-danger-subtle border-0 d-flex align-items-start gap-2 p-3 mb-3 rounded-3 text-danger">
+                <i class="bi bi-exclamation-octagon-fill mt-1"></i>
+                <div>
+                    <p class="fw-bold mb-0" style="font-size: 13px;">Error</p>
+                    <p class="mb-0 lh-sm mt-1" style="font-size: 13px;" id="forgot-error-text">Please enter a valid email address.</p>
+                </div>
+            </div>
+
+            <!-- Form -->
+            <form id="forgot-form" onsubmit="submitForgotPassword(event)">
+                <div class="mb-3">
+                    <label for="forgot-email" class="form-label text-dark fw-bold text-uppercase mb-1" style="font-size: 11px; letter-spacing: 0.05em;">Registered Email Address</label>
+                    <div class="position-relative">
+                        <span class="position-absolute top-50 start-0 translate-middle-y ps-3 text-muted">
+                            <i class="bi bi-envelope"></i>
+                        </span>
+                        <input type="email" id="forgot-email" class="form-control bg-white ps-5 text-dark" placeholder="example@gmail.com" />
+                    </div>
+                </div>
+                <button type="submit" id="forgot-submit-btn" class="btn btn-black w-100 py-3 fw-bold d-flex align-items-center justify-content-center gap-2 rounded-3 mt-4">
+                    <span>Send Reset Link</span>
+                    <i class="bi bi-arrow-right fw-bold"></i>
+                </button>
+            </form>
+
+            <div class="text-center mt-4 pt-2">
+                <button type="button" class="btn btn-link p-0 text-muted fw-bold text-decoration-none d-inline-flex align-items-center gap-1 group-hover" onclick="closeAuthModal()" style="font-size: 13px;">
+                    <i class="bi bi-arrow-left"></i>
+                    <span>Back to Login</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- SET NEW PASSWORD MODAL -->
+        <div id="reset-password-modal" class="bg-white border rounded-4 p-4 p-sm-5 shadow-lg position-relative w-100 d-none mx-auto" style="max-width: 420px; transform: scale(0.95); transition: transform 0.3s ease;">
+            <!-- Brand & Close -->
+            <div class="d-flex align-items-center justify-content-between mb-4">
+                <div class="d-inline-flex align-items-center gap-2 px-2 py-1 rounded-pill bg-light border text-dark" style="font-size: 11px; letter-spacing: 0.02em;">
+                    <i class="bi bi-shield-lock-fill text-primary"></i>
+                    <span class="fw-bold">SmartTransit Dhaka · Secure Auth</span>
+                </div>
+                <button type="button" class="btn-close shadow-none d-none" aria-label="Close" onclick="closeAuthModal()" id="reset-close-btn"></button>
+            </div>
+            
+            <!-- Icon & Headers -->
+            <div class="text-center mb-4">
+                <div class="d-inline-flex align-items-center justify-content-center rounded-4 bg-light border text-dark mb-3 position-relative" style="width: 56px; height: 56px;">
+                    <span class="material-symbols-outlined fs-2">password</span>
+                </div>
+                <h2 class="fs-5 fw-bold text-dark mb-1" style="letter-spacing: -0.02em;">Set New Password</h2>
+                <p class="text-muted fw-medium mb-0" style="font-size: 14px;">Create a new password for your Smart Transit account.</p>
+            </div>
+
+            <!-- Feedback Alerts -->
+            <div id="reset-feedback-success" class="d-none alert bg-light border-0 d-flex align-items-start gap-2 p-3 mb-3 rounded-3">
+                <i class="bi bi-check-circle-fill text-black mt-1"></i>
+                <div>
+                    <p class="fw-bold text-dark mb-0" style="font-size: 13px;">Password Updated</p>
+                    <p class="text-muted mb-0 lh-sm mt-1" style="font-size: 13px;">You can now log in with your new password.</p>
+                </div>
+            </div>
+            <div id="reset-feedback-error" class="d-none alert bg-danger-subtle border-0 d-flex align-items-start gap-2 p-3 mb-3 rounded-3 text-danger">
+                <i class="bi bi-exclamation-octagon-fill mt-1"></i>
+                <div>
+                    <p class="fw-bold mb-0" style="font-size: 13px;">Error</p>
+                    <p class="mb-0 lh-sm mt-1" style="font-size: 13px;" id="reset-error-text">Reset link is invalid or has expired.</p>
+                </div>
+            </div>
+
+            <!-- Form -->
+            <form id="reset-form" onsubmit="submitResetPassword(event)">
+                <!-- Password -->
+                <div class="mb-3">
+                    <label for="reset-password" class="form-label text-dark fw-bold text-uppercase mb-1" style="font-size: 11px; letter-spacing: 0.05em;">New Password</label>
+                    <div class="position-relative">
+                        <span class="position-absolute top-50 start-0 translate-middle-y ps-3 text-muted">
+                            <i class="bi bi-lock"></i>
+                        </span>
+                        <input type="password" id="reset-password" class="form-control bg-white ps-5 pe-5 text-dark" placeholder="Enter new password" />
+                        <button type="button" class="btn position-absolute top-50 end-0 translate-middle-y pe-3 text-muted border-0 shadow-none" onclick="togglePasswordVisibility('reset-password', this)">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Confirm Password -->
+                <div class="mb-3">
+                    <label for="reset-confirm-password" class="form-label text-dark fw-bold text-uppercase mb-1" style="font-size: 11px; letter-spacing: 0.05em;">Confirm New Password</label>
+                    <div class="position-relative">
+                        <span class="position-absolute top-50 start-0 translate-middle-y ps-3 text-muted">
+                            <i class="bi bi-shield-check"></i>
+                        </span>
+                        <input type="password" id="reset-confirm-password" class="form-control bg-white ps-5 pe-5 text-dark" placeholder="Re-enter new password" />
+                        <button type="button" class="btn position-absolute top-50 end-0 translate-middle-y pe-3 text-muted border-0 shadow-none" onclick="togglePasswordVisibility('reset-confirm-password', this)">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <button type="submit" id="reset-submit-btn" class="btn btn-black w-100 py-3 fw-bold d-flex align-items-center justify-content-center gap-2 rounded-3 mt-4">
+                    <span>Update Password</span>
+                    <i class="bi bi-check-lg fw-bold"></i>
+                </button>
+            </form>
+            
+            <div id="reset-invalid-actions" class="d-none text-center mt-4 pt-2">
+                <button type="button" class="btn btn-black w-100 py-3 fw-bold rounded-3 mb-3" onclick="requestNewResetLink()">Request New Reset Link</button>
+                <button type="button" class="btn btn-link p-0 text-muted fw-bold text-decoration-none" onclick="closeAuthModal()" style="font-size: 13px;">Back to Login</button>
+            </div>
+            <div id="reset-success-actions" class="d-none text-center mt-4 pt-2">
+                <button type="button" class="btn btn-black w-100 py-3 fw-bold rounded-3" onclick="closeAuthModalAndLogin()">Continue to Login</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="{{ url_for('static', filename='js/auth.js') }}"></script>
+</body>
+</html>

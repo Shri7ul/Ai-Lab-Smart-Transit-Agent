@@ -1,0 +1,6 @@
+project-includes = ["src"]
+search-path = [".", "src"]
+
+python-interpreter-path = "C:\\Users\\USER\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe"
+
+# Force Pyrefly re-index

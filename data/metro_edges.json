@@ -1,0 +1,12 @@
+[
+  { "source": "UTR_MTR", "target": "AIR_MTR", "mode": "metro", "time": 6, "cost": 30, "distance": 4.5 },
+  { "source": "AIR_MTR", "target": "UTR_MTR", "mode": "metro", "time": 6, "cost": 30, "distance": 4.5 },
+  { "source": "AIR_MTR", "target": "MOH_MTR", "mode": "metro", "time": 8, "cost": 30, "distance": 6.0 },
+  { "source": "MOH_MTR", "target": "AIR_MTR", "mode": "metro", "time": 8, "cost": 30, "distance": 6.0 },
+  { "source": "MOH_MTR", "target": "FAR_MTR", "mode": "metro", "time": 5, "cost": 20, "distance": 3.2 },
+  { "source": "FAR_MTR", "target": "MOH_MTR", "mode": "metro", "time": 5, "cost": 20, "distance": 3.2 },
+  { "source": "FAR_MTR", "target": "SHB_MTR", "mode": "metro", "time": 4, "cost": 20, "distance": 2.6 },
+  { "source": "SHB_MTR", "target": "FAR_MTR", "mode": "metro", "time": 4, "cost": 20, "distance": 2.6 },
+  { "source": "SHB_MTR", "target": "MTJ_MTR", "mode": "metro", "time": 5, "cost": 20, "distance": 3.0 },
+  { "source": "MTJ_MTR", "target": "SHB_MTR", "mode": "metro", "time": 5, "cost": 20, "distance": 3.0 }
+]

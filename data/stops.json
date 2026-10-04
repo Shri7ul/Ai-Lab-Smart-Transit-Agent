@@ -1,0 +1,18 @@
+[
+  { "id": "UTR_BUS", "name": "Uttara", "latitude": 23.8759, "longitude": 90.3795, "mode": "bus" },
+  { "id": "UTR_MTR", "name": "Uttara", "latitude": 23.8741, "longitude": 90.3812, "mode": "metro" },
+  { "id": "AIR_BUS", "name": "Airport", "latitude": 23.8433, "longitude": 90.3978, "mode": "bus" },
+  { "id": "AIR_MTR", "name": "Airport", "latitude": 23.8449, "longitude": 90.3960, "mode": "metro" },
+  { "id": "BAN_BUS", "name": "Banani", "latitude": 23.7937, "longitude": 90.4066, "mode": "bus" },
+  { "id": "MOH_BUS", "name": "Mohakhali", "latitude": 23.7806, "longitude": 90.4046, "mode": "bus" },
+  { "id": "MOH_MTR", "name": "Mohakhali", "latitude": 23.7822, "longitude": 90.4030, "mode": "metro" },
+  { "id": "FAR_BUS", "name": "Farmgate", "latitude": 23.7580, "longitude": 90.3894, "mode": "bus" },
+  { "id": "FAR_MTR", "name": "Farmgate", "latitude": 23.7566, "longitude": 90.3878, "mode": "metro" },
+  { "id": "SHB_MTR", "name": "Shahbag", "latitude": 23.7386, "longitude": 90.3950, "mode": "metro" },
+  { "id": "SHB_BUS", "name": "Shahbag", "latitude": 23.7398, "longitude": 90.3966, "mode": "bus" },
+  { "id": "MTJ_BUS", "name": "Motijheel", "latitude": 23.7331, "longitude": 90.4172, "mode": "bus" },
+  { "id": "MTJ_MTR", "name": "Motijheel", "latitude": 23.7325, "longitude": 90.4155, "mode": "metro" },
+  { "id": "MIR_BUS", "name": "Mirpur", "latitude": 23.8067, "longitude": 90.3686, "mode": "bus" },
+  { "id": "GUL_BUS", "name": "Gulshan", "latitude": 23.7925, "longitude": 90.4147, "mode": "bus" },
+  { "id": "SAD_BUS", "name": "Sadarghat", "latitude": 23.7104, "longitude": 90.4074, "mode": "bus" }
+]
