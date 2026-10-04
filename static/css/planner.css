@@ -1,0 +1,483 @@
+:root {
+            --bg-page: #F7F7F7;
+            --card-bg: #FFFFFF;
+            --border-color: #E5E7EB;
+            --border-dark: #111111;
+            --text-heading: #111111;
+            --text-body: #222222;
+            --text-muted: #6B7280;
+            --accent-blue: #2563EB;
+            --color-success: #16A34A;
+            --color-amber: #D97706;
+            --color-amber-bg: #FFFBEB;
+            --color-amber-border: #FDE68A;
+            --font-stack: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            background-color: var(--bg-page);
+            color: var(--text-body);
+            font-family: var(--font-stack);
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            line-height: 1.5;
+        }
+
+        /* Minimal Top Navigation */
+        .top-navbar {
+            background-color: #FFFFFF;
+            border-bottom: 1px solid var(--border-color);
+            height: 64px;
+            position: sticky;
+            top: 0;
+            z-index: 1020;
+        }
+
+        .brand-logo-img {
+            height: 36px;
+            width: auto;
+            object-fit: contain;
+            display: block;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 12px;
+            border-radius: 9999px;
+            background-color: #F3F4F6;
+            border: 1px solid var(--border-color);
+            font-size: 12px;
+            font-weight: 600;
+            color: #111111;
+        }
+
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--color-success);
+            border-radius: 50%;
+            position: relative;
+        }
+
+        .pulse-dot::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            border-radius: 50%;
+            background-color: var(--color-success);
+            animation: pulse-ring 1.8s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+        }
+
+        @keyframes pulse-ring {
+            0% {
+                transform: scale(0.95);
+                opacity: 0.8;
+            }
+
+            50% {
+                transform: scale(2.2);
+                opacity: 0;
+            }
+
+            100% {
+                transform: scale(2.2);
+                opacity: 0;
+            }
+        }
+
+        .avatar-circle {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: #111111;
+            color: #FFFFFF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 600;
+            border: 1px solid #111111;
+        }
+
+        /* Typography Utilities */
+        .tracking-wider-sm {
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .uber-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+            padding: 24px;
+            transition: box-shadow 0.2s ease, border-color 0.2s ease;
+        }
+
+        @media (max-width: 576px) {
+            .uber-card {
+                padding: 16px;
+                border-radius: 14px;
+            }
+        }
+
+        /* Preference Chips */
+        .pref-chip {
+            background-color: #FFFFFF;
+            border: 1px solid var(--border-color);
+            color: #111111;
+            border-radius: 9999px;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 7px 16px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.15s ease-in-out;
+            user-select: none;
+        }
+
+        .pref-chip:hover {
+            border-color: #111111;
+        }
+
+        .pref-chip.active {
+            background-color: #000000;
+            color: #FFFFFF;
+            border-color: #000000;
+        }
+
+        /* Primary Uber CTA Button */
+        .btn-uber-black {
+            background-color: #000000;
+            color: #FFFFFF;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            padding: 14px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            letter-spacing: -0.01em;
+            transition: background-color 0.15s ease, transform 0.05s ease;
+        }
+
+        .btn-uber-black:hover {
+            background-color: #222222;
+            color: #FFFFFF;
+        }
+
+        .btn-uber-black:active {
+            transform: scale(0.99);
+        }
+
+        /* Route Pill Steps */
+        .route-step-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background-color: #F3F4F6;
+            color: #111111;
+            padding: 5px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .route-step-pill.metro {
+            background-color: #000000;
+            color: #FFFFFF;
+        }
+
+        .route-step-pill.bus {
+            background-color: #EEF2FF;
+            color: var(--accent-blue);
+            border: 1px solid #DBEAFE;
+        }
+
+        /* Mobile 2x2 Metric Grid */
+        .metric-box {
+            background: #F9FAFB;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 12px 14px;
+        }
+
+        .metric-label {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 2px;
+            display: block;
+        }
+
+        .metric-value {
+            font-size: 20px;
+            font-weight: 800;
+            color: #111111;
+            line-height: 1.2;
+        }
+
+        /* Vertical Timeline */
+        .timeline-track {
+            position: relative;
+            padding-left: 28px;
+        }
+
+        .timeline-track::before {
+            content: '';
+            position: absolute;
+            top: 6px;
+            bottom: 6px;
+            left: 7px;
+            width: 2px;
+            background-color: #E5E7EB;
+        }
+
+        .timeline-node {
+            position: relative;
+            margin-bottom: 22px;
+        }
+
+        .timeline-node:last-child {
+            margin-bottom: 0;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: -28px;
+            top: 2px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: #000000;
+            border: 3px solid #FFFFFF;
+            box-shadow: 0 0 0 1px var(--border-color);
+        }
+
+        .timeline-dot.metro-dot {
+            background-color: var(--accent-blue);
+        }
+
+        .timeline-dot.end-dot {
+            background-color: var(--color-success);
+        }
+
+        /* Trip Options Accordion */
+        .accordion-toggle-btn {
+            width: 100%;
+            border: none;
+            background: transparent;
+            padding: 10px 0;
+            text-align: left;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            font-size: 14px;
+            color: #111111;
+        }
+
+        /* Radio route counter */
+        .count-chip-label {
+            flex: 1;
+            text-align: center;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 8px 10px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            background: #FFFFFF;
+            transition: all 0.15s ease;
+        }
+
+        .btn-check:checked+.count-chip-label {
+            background-color: #000000;
+            color: #FFFFFF;
+            border-color: #000000;
+        }
+
+        /* Sticky map container on desktop */
+        @media (min-width: 992px) {
+            .sticky-side-panel {
+                position: sticky;
+                top: 84px;
+            }
+        }
+
+        /* Tab Page Switcher Transitions */
+        .tab-content-panel {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.25s ease-in-out;
+        }
+
+        .tab-content-panel.active-tab {
+            display: block;
+            opacity: 1;
+        }
+
+        /* Bookmark Save Button Styling */
+        .btn-bookmark-action {
+            background: #FFFFFF;
+            border: 1px solid var(--border-color);
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #4B5563;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            flex-shrink: 0;
+        }
+
+        .btn-bookmark-action:hover {
+            background-color: #F3F4F6;
+            border-color: #111111;
+            color: #111111;
+        }
+
+        .btn-bookmark-action.saved {
+            background-color: #111111;
+            border-color: #111111;
+            color: #FFFFFF;
+        }
+
+        /* Filter Chips for Lines */
+        .line-filter-chip {
+            background-color: #FFFFFF;
+            border: 1px solid var(--border-color);
+            color: #4B5563;
+            padding: 7px 16px;
+            border-radius: 9999px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .line-filter-chip.active {
+            background-color: #000000;
+            color: #FFFFFF;
+            border-color: #000000;
+        }
+
+        /* Toast Notification */
+        .app-toast {
+            position: fixed;
+            top: 76px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-10px);
+            background-color: #111111;
+            color: #FFFFFF;
+            padding: 10px 18px;
+            border-radius: 9999px;
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            z-index: 2000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+
+        .app-toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+            pointer-events: auto;
+        }
+
+        /* Clean bottom navigation (Mobile & Desktop App Shell) */
+        .mobile-bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 64px;
+            background-color: #FFFFFF;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            z-index: 1050;
+            padding: 0 12px;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.03);
+        }
+
+        .mobile-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            border: none;
+            text-decoration: none;
+            color: #6B7280;
+            font-size: 11px;
+            font-weight: 600;
+            gap: 3px;
+            padding: 6px 18px;
+            border-radius: 12px;
+            cursor: pointer;
+            position: relative;
+            min-width: 80px;
+            min-height: 48px;
+            transition: all 0.15s ease;
+        }
+
+        .mobile-nav-item:hover {
+            color: #111111;
+            background-color: #F9FAFB;
+        }
+
+        .mobile-nav-item.active {
+            color: #000000;
+            background-color: #F3F4F6;
+        }
+
+        .mobile-nav-item.active i {
+            color: #000000;
+        }
+
+        .badge-nav-counter {
+            position: absolute;
+            top: 4px;
+            right: 18px;
+            background-color: #000000;
+            color: #FFFFFF;
+            font-size: 10px;
+            font-weight: 700;
+            min-width: 17px;
+            height: 17px;
+            border-radius: 9999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 4px;
+            line-height: 1;
+            border: 2px solid #FFFFFF;
+        }

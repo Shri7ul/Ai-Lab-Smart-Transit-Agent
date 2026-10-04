@@ -1,0 +1,1897 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Smart Transit Dhaka - AI Journey Planner</title>
+    <!-- Inter Typography -->
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap"
+        rel="stylesheet" />
+    <!-- Bootstrap 5 CSS & Bootstrap Icons -->
+    <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+    <style>
+        :root {
+            --bg-page: #F7F7F7;
+            --card-bg: #FFFFFF;
+            --border-color: #E5E7EB;
+            --border-dark: #111111;
+            --text-heading: #111111;
+            --text-body: #222222;
+            --text-muted: #6B7280;
+            --accent-blue: #2563EB;
+            --color-success: #16A34A;
+            --color-amber: #D97706;
+            --color-amber-bg: #FFFBEB;
+            --color-amber-border: #FDE68A;
+            --font-stack: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            background-color: var(--bg-page);
+            color: var(--text-body);
+            font-family: var(--font-stack);
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            line-height: 1.5;
+        }
+
+        /* Minimal Top Navigation */
+        .top-navbar {
+            background-color: #FFFFFF;
+            border-bottom: 1px solid var(--border-color);
+            height: 64px;
+            position: sticky;
+            top: 0;
+            z-index: 1020;
+        }
+
+        .brand-logo-img {
+            height: 36px;
+            width: auto;
+            object-fit: contain;
+            display: block;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 12px;
+            border-radius: 9999px;
+            background-color: #F3F4F6;
+            border: 1px solid var(--border-color);
+            font-size: 12px;
+            font-weight: 600;
+            color: #111111;
+        }
+
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--color-success);
+            border-radius: 50%;
+            position: relative;
+        }
+
+        .pulse-dot::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            border-radius: 50%;
+            background-color: var(--color-success);
+            animation: pulse-ring 1.8s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+        }
+
+        @keyframes pulse-ring {
+            0% {
+                transform: scale(0.95);
+                opacity: 0.8;
+            }
+
+            50% {
+                transform: scale(2.2);
+                opacity: 0;
+            }
+
+            100% {
+                transform: scale(2.2);
+                opacity: 0;
+            }
+        }
+
+        .avatar-circle {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: #111111;
+            color: #FFFFFF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 600;
+            border: 1px solid #111111;
+        }
+
+        /* Typography Utilities */
+        .tracking-wider-sm {
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .uber-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+            padding: 24px;
+            transition: box-shadow 0.2s ease, border-color 0.2s ease;
+        }
+
+        @media (max-width: 576px) {
+            .uber-card {
+                padding: 16px;
+                border-radius: 14px;
+            }
+        }
+
+        /* Preference Chips */
+        .pref-chip {
+            background-color: #FFFFFF;
+            border: 1px solid var(--border-color);
+            color: #111111;
+            border-radius: 9999px;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 7px 16px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.15s ease-in-out;
+            user-select: none;
+        }
+
+        .pref-chip:hover {
+            border-color: #111111;
+        }
+
+        .pref-chip.active {
+            background-color: #000000;
+            color: #FFFFFF;
+            border-color: #000000;
+        }
+
+        /* Primary Uber CTA Button */
+        .btn-uber-black {
+            background-color: #000000;
+            color: #FFFFFF;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            padding: 14px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            letter-spacing: -0.01em;
+            transition: background-color 0.15s ease, transform 0.05s ease;
+        }
+
+        .btn-uber-black:hover {
+            background-color: #222222;
+            color: #FFFFFF;
+        }
+
+        .btn-uber-black:active {
+            transform: scale(0.99);
+        }
+
+        /* Route Pill Steps */
+        .route-step-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background-color: #F3F4F6;
+            color: #111111;
+            padding: 5px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .route-step-pill.metro {
+            background-color: #000000;
+            color: #FFFFFF;
+        }
+
+        .route-step-pill.bus {
+            background-color: #EEF2FF;
+            color: var(--accent-blue);
+            border: 1px solid #DBEAFE;
+        }
+
+        /* Mobile 2x2 Metric Grid */
+        .metric-box {
+            background: #F9FAFB;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 12px 14px;
+        }
+
+        .metric-label {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 2px;
+            display: block;
+        }
+
+        .metric-value {
+            font-size: 20px;
+            font-weight: 800;
+            color: #111111;
+            line-height: 1.2;
+        }
+
+        /* Vertical Timeline */
+        .timeline-track {
+            position: relative;
+            padding-left: 28px;
+        }
+
+        .timeline-track::before {
+            content: '';
+            position: absolute;
+            top: 6px;
+            bottom: 6px;
+            left: 7px;
+            width: 2px;
+            background-color: #E5E7EB;
+        }
+
+        .timeline-node {
+            position: relative;
+            margin-bottom: 22px;
+        }
+
+        .timeline-node:last-child {
+            margin-bottom: 0;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: -28px;
+            top: 2px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: #000000;
+            border: 3px solid #FFFFFF;
+            box-shadow: 0 0 0 1px var(--border-color);
+        }
+
+        .timeline-dot.metro-dot {
+            background-color: var(--accent-blue);
+        }
+
+        .timeline-dot.end-dot {
+            background-color: var(--color-success);
+        }
+
+        /* Trip Options Accordion */
+        .accordion-toggle-btn {
+            width: 100%;
+            border: none;
+            background: transparent;
+            padding: 10px 0;
+            text-align: left;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            font-size: 14px;
+            color: #111111;
+        }
+
+        /* Radio route counter */
+        .count-chip-label {
+            flex: 1;
+            text-align: center;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 8px 10px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            background: #FFFFFF;
+            transition: all 0.15s ease;
+        }
+
+        .btn-check:checked+.count-chip-label {
+            background-color: #000000;
+            color: #FFFFFF;
+            border-color: #000000;
+        }
+
+        /* Sticky map container on desktop */
+        @media (min-width: 992px) {
+            .sticky-side-panel {
+                position: sticky;
+                top: 84px;
+            }
+        }
+
+        /* Tab Page Switcher Transitions */
+        .tab-content-panel {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.25s ease-in-out;
+        }
+
+        .tab-content-panel.active-tab {
+            display: block;
+            opacity: 1;
+        }
+
+        /* Bookmark Save Button Styling */
+        .btn-bookmark-action {
+            background: #FFFFFF;
+            border: 1px solid var(--border-color);
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #4B5563;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            flex-shrink: 0;
+        }
+
+        .btn-bookmark-action:hover {
+            background-color: #F3F4F6;
+            border-color: #111111;
+            color: #111111;
+        }
+
+        .btn-bookmark-action.saved {
+            background-color: #111111;
+            border-color: #111111;
+            color: #FFFFFF;
+        }
+
+        /* Filter Chips for Lines */
+        .line-filter-chip {
+            background-color: #FFFFFF;
+            border: 1px solid var(--border-color);
+            color: #4B5563;
+            padding: 7px 16px;
+            border-radius: 9999px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .line-filter-chip.active {
+            background-color: #000000;
+            color: #FFFFFF;
+            border-color: #000000;
+        }
+
+        /* Toast Notification */
+        .app-toast {
+            position: fixed;
+            top: 76px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-10px);
+            background-color: #111111;
+            color: #FFFFFF;
+            padding: 10px 18px;
+            border-radius: 9999px;
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            z-index: 2000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+
+        .app-toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+            pointer-events: auto;
+        }
+
+        /* Clean bottom navigation (Mobile & Desktop App Shell) */
+        .mobile-bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 64px;
+            background-color: #FFFFFF;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            z-index: 1050;
+            padding: 0 12px;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.03);
+        }
+
+        .mobile-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            border: none;
+            text-decoration: none;
+            color: #6B7280;
+            font-size: 11px;
+            font-weight: 600;
+            gap: 3px;
+            padding: 6px 18px;
+            border-radius: 12px;
+            cursor: pointer;
+            position: relative;
+            min-width: 80px;
+            min-height: 48px;
+            transition: all 0.15s ease;
+        }
+
+        .mobile-nav-item:hover {
+            color: #111111;
+            background-color: #F9FAFB;
+        }
+
+        .mobile-nav-item.active {
+            color: #000000;
+            background-color: #F3F4F6;
+        }
+
+        .mobile-nav-item.active i {
+            color: #000000;
+        }
+
+        .badge-nav-counter {
+            position: absolute;
+            top: 4px;
+            right: 18px;
+            background-color: #000000;
+            color: #FFFFFF;
+            font-size: 10px;
+            font-weight: 700;
+            min-width: 17px;
+            height: 17px;
+            border-radius: 9999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 4px;
+            line-height: 1;
+            border: 2px solid #FFFFFF;
+        }
+    </style>
+</head>
+
+<body class="pb-5 mb-4">
+    <!-- TOAST ALERT -->
+    <div class="app-toast" id="global-toast">
+        <i class="bi bi-check-circle-fill text-white"></i>
+        <span id="toast-message">Route saved to Saved tab!</span>
+    </div>
+    <!-- TOP HEADER / BRANDING -->
+    <header class="top-navbar d-flex align-items-center">
+        <div class="container d-flex justify-content-between align-items-center" style="max-width: 1150px;">
+            <!-- Logo: https://lh3.googleusercontent.com/aida/AEtjO1VXMGlkaHIzbUlTjXrhOwLHc1uZ99hLfiutSLFHZx6noYjWXXC_C-Q-_v-PtuVu9T2GObIcF-G7WZtcyav3V6MEeqCLXbUXOIw7QHYU5-ATb_TQ_UL_PYsoxDTRXEp6Nyor05oVidP_rsLN0Le1cKPQp7Oss9z3fYh-IpOIAbIEUX9i7PrqyZ4fnF6d4vqf23dEnRhjt4BPoGpL_lgh75yGwdfUt75qIYnD8ZkYFGkehdUyqLKEQ7I490Q -->
+            <a aria-label="Smart Transit Home" class="d-flex align-items-center text-decoration-none"
+                href="javascript:void(0)" onclick="switchTab('tab-plan')">
+                <img alt="Smart Transit Minimal Monochrome Logo" class="brand-logo-img"
+                    src="https://lh3.googleusercontent.com/aida/AEtjO1VXMGlkaHIzbUlTjXrhOwLHc1uZ99hLfiutSLFHZx6noYjWXXC_C-Q-_v-PtuVu9T2GObIcF-G7WZtcyav3V6MEeqCLXbUXOIw7QHYU5-ATb_TQ_UL_PYsoxDTRXEp6Nyor05oVidP_rsLN0Le1cKPQp7Oss9z3fYh-IpOIAbIEUX9i7PrqyZ4fnF6d4vqf23dEnRhjt4BPoGpL_lgh75yGwdfUt75qIYnD8ZkYFGkehdUyqLKEQ7I490Q" />
+            </a>
+            <!-- Status Badge & User Avatar -->
+            <div class="d-flex align-items-center gap-3">
+                <div class="status-badge">
+                    <span class="pulse-dot"></span>
+                    <span class="">Online</span>
+                </div>
+                <div class="position-relative" id="profile-dropdown-container">
+                    <button aria-expanded="false" aria-haspopup="true" aria-label="Account menu"
+                        class="avatar-circle border-0 p-0" id="profile-avatar-btn"
+                        onclick="toggleProfileDropdown(event)"
+                        style="cursor: pointer; transition: transform 0.15s ease;" title="Account" type="button">
+                        <i class="bi bi-person"></i>
+                    </button>
+                    <!-- Profile Popover Dropdown (Clean Minimal Box Styled to Match) -->
+                    <div class="d-none position-absolute bg-white" id="profile-dropdown-menu"
+                        style="top: calc(100% + 8px); right: 0px; width: 250px; border-radius: 16px; border: 1px solid rgb(229, 231, 235); box-shadow: rgba(0, 0, 0, 0.12) 0px 10px 25px -5px, rgba(0, 0, 0, 0.06) 0px 4px 6px -2px; padding: 14px; z-index: 1100;">
+                        <!-- Profile Header section -->
+                        <div class="d-flex align-items-center" style="gap: 10px;">
+                            <div class="flex-shrink-0"
+                                style="width: 38px; height: 38px; min-width: 38px; border-radius: 50%; background-color: #000000; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; line-height: 1;">
+                                MR
+                            </div>
+                            <div class="d-flex flex-column text-start overflow-hidden" style="line-height: 1.25;">
+                                <span class="text-truncate"
+                                    style="font-size: 14px; font-weight: 600; color: #111827;">Munjil Rahman</span>
+                                <span class="text-truncate text-muted"
+                                    style="font-size: 12px; margin-top: 2px;">munjil@email.com</span>
+                                <div class="d-flex align-items-center"
+                                    style="gap: 6px; margin-top: 4px; font-size: 11px; font-weight: 500; color: #9CA3AF;">
+                                    <span
+                                        style="width: 6px; height: 6px; min-width: 6px; border-radius: 50%; background-color: #16A34A; display: inline-block;"></span>
+                                    <span class="">Signed in</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Subtle 1px divider -->
+                        <div style="height: 1px; background-color: #F3F4F6; margin: 10px 0;"></div>
+                        <!-- Profile item -->
+                        <button class="w-100 border-0 d-flex align-items-center text-start mb-1"
+                            onclick="viewProfile(event)" onmouseout="this.style.backgroundColor='transparent'"
+                            onmouseover="this.style.backgroundColor='#F3F4F6'"
+                            style="background: transparent; color: #111111; font-size: 12.5px; font-weight: 600; padding: 8px 10px; border-radius: 10px; gap: 10px; cursor: pointer; transition: background-color 0.15s ease;"
+                            type="button">
+                            <i class="bi bi-person-badge flex-shrink-0" style="font-size: 15px; color: #111111;"></i>
+                            <span class="">Profile &amp; Settings</span>
+                        </button>
+                        <!-- Clean tappable Logout Row -->
+                        <button class="w-100 border-0 d-flex align-items-center text-start"
+                            onclick="handleLogout(event)" onmousedown="this.style.backgroundColor='#FEE2E2'"
+                            onmouseout="this.style.backgroundColor='transparent'"
+                            onmouseover="this.style.backgroundColor='#FEF2F2'"
+                            style="background: transparent; color: #DC2626; font-size: 12.5px; font-weight: 600; padding: 8px 10px; border-radius: 10px; gap: 10px; cursor: pointer; transition: background-color 0.15s ease; outline: none; border-style: none;"
+                            type="button">
+                            <i class="bi bi-box-arrow-right flex-shrink-0" style="font-size: 15px; color: #DC2626;"></i>
+                            <span class="">Log out</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- MAIN WRAPPER CONTAINER -->
+    <main class="container my-4 pb-5 pb-lg-4" style="max-width: 1150px;">
+        <!-- ========================================== -->
+        <!-- SECTION 1: PLAN TRIP (Default Active Tab)  -->
+        <!-- ========================================== -->
+        <section class="tab-content-panel active-tab" id="tab-plan">
+            <!-- Top Content Section -->
+            <div class="mb-4">
+                <div class="d-flex flex-column flex-md-row md-align-items-center justify-content-between gap-3">
+                    <div>
+                        <span class="d-block text-muted tracking-wider-sm fw-bold" style="font-size: 12px;">SMART
+                            JOURNEY PLANNER</span>
+                        <h1 class="fw-bold mt-1 mb-1"
+                            style="color: #111111; font-size: clamp(24px, 4vw, 32px); letter-spacing: -0.02em;">
+                            Where do you want to go?
+                        </h1>
+                        <p class="text-muted mb-0" style="font-size: 14.5px;">
+                            Find the best route based on time, cost, walking distance and your travel preferences.
+                        </p>
+                    </div>
+                    <!-- Pill-style Location Button -->
+                    <div class="align-self-start align-self-md-center">
+                        <button
+                            class="btn btn-outline-dark d-inline-flex align-items-center gap-2 px-3 py-2 rounded-pill bg-white shadow-sm"
+                            id="gps-btn" onclick="useCurrentLocation()"
+                            style="border-color: #E5E7EB; color: #111111; font-weight: 600; font-size: 13.5px;"
+                            type="button">
+                            <i class="bi bi-geo-alt-fill text-dark" id="gps-icon"></i>
+                            <span class="" id="gps-label">Use My Current Location</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- 2-COLUMN DESKTOP LAYOUT (Left: Input & Routes, Right: Sticky Map & Weather) -->
+            <div class="row g-4 align-items-start">
+                <!-- LEFT COLUMN (65% / col-lg-8) -->
+                <div class="col-lg-8 d-flex flex-column gap-4">
+                    <!-- MAIN JOURNEY INPUT CARD -->
+                    <div class="uber-card">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <label class="fw-bold text-dark m-0" for="journey-query" style="font-size: 15px;">
+                                Describe your journey
+                            </label>
+                            <span class="d-inline-flex align-items-center gap-1 text-muted"
+                                style="font-size: 12px; font-weight: 600;">
+                                <i class="bi bi-stars" style="color: #111111;"></i>
+                                <span class="">AI Prompt Engine</span>
+                            </span>
+                        </div>
+                        <div class="position-relative">
+                            <textarea class="form-control rounded-3 p-3 text-dark" id="journey-query"
+                                placeholder="Shahbag to Motijheel under 100 taka, less walking" rows="2"
+                                style="border-color: var(--border-color); font-size: 14.5px; font-weight: 500; resize: none; background: #FAFAFA;">Shahbag to Motijheel under 100 taka, less walking</textarea>
+                        </div>
+                        <div class="text-muted d-flex align-items-center gap-1 mt-2" style="font-size: 12px;">
+                            <i class="bi bi-info-circle"></i>
+                            <span class="">Write naturally in English or Bangla.</span>
+                        </div>
+                        <!-- Quick Preferences Chips -->
+                        <div class="mt-3 pt-2">
+                            <span class="d-block text-muted tracking-wider-sm fw-bold mb-2"
+                                style="font-size: 11px;">QUICK PREFERENCES</span>
+                            <div class="d-flex flex-wrap gap-2" id="pref-chips-container">
+                                <button class="pref-chip active" onclick="toggleChip(this)" type="button">
+                                    <span class="">⚡ Fastest</span>
+                                </button>
+                                <button class="pref-chip" onclick="toggleChip(this)" type="button">
+                                    <span class="">৳ Lowest Cost</span>
+                                </button>
+                                <button class="pref-chip active" onclick="toggleChip(this)" type="button">
+                                    <span class="">🚶 Less Walking</span>
+                                </button>
+                                <button class="pref-chip" onclick="toggleChip(this)" type="button">
+                                    <span class="">🔄 Fewer Transfers</span>
+                                </button>
+                            </div>
+                        </div>
+                        <!-- Collapsible Trip Options (Matching Flask Backend) -->
+                        <div class="mt-3 pt-3 border-top" style="border-color: #F0F0F0 !important;">
+                            <button class="accordion-toggle-btn"
+                                onclick="toggleAccordion('trip-options-collapse', 'trip-options-chevron')"
+                                type="button">
+                                <span class="d-flex align-items-center gap-2">
+                                    <i class="bi bi-sliders2 text-dark"></i>
+                                    <span class="">Trip Options</span>
+                                </span>
+                                <i class="bi bi-chevron-down" id="trip-options-chevron"></i>
+                            </button>
+                            <div class="d-none mt-3 pt-1" id="trip-options-collapse">
+                                <div class="p-3 rounded-3"
+                                    style="background-color: #F9FAFB; border: 1px solid var(--border-color);">
+                                    <div class="row g-3">
+                                        <div class="col-12 col-sm-6">
+                                            <label class="form-label text-muted fw-semibold"
+                                                style="font-size: 12px;">Departure Time</label>
+                                            <input class="form-control form-control-sm bg-white"
+                                                style="border-color: #D1D5DB; font-size: 13px;" type="datetime-local"
+                                                value="2025-05-18T08:15" />
+                                        </div>
+                                        <div class="col-12 col-sm-6">
+                                            <label class="form-label text-muted fw-semibold"
+                                                style="font-size: 12px;">Arrival Deadline</label>
+                                            <input class="form-control form-control-sm bg-white"
+                                                style="border-color: #D1D5DB; font-size: 13px;" type="datetime-local"
+                                                value="2025-05-18T09:00" />
+                                        </div>
+                                        <div class="col-12">
+                                            <label class="form-label text-muted fw-semibold mb-2"
+                                                style="font-size: 12px;">Number of Routes</label>
+                                            <div class="d-flex gap-2">
+                                                <input autocomplete="off" class="btn-check" id="count3"
+                                                    name="routeCount" type="radio" />
+                                                <label class="count-chip-label" for="count3">3 Routes</label>
+                                                <input autocomplete="off" checked="" class="btn-check" id="count5"
+                                                    name="routeCount" type="radio" />
+                                                <label class="count-chip-label" for="count5">5 Routes (Default)</label>
+                                                <input autocomplete="off" class="btn-check" id="count7"
+                                                    name="routeCount" type="radio" />
+                                                <label class="count-chip-label" for="count7">7 Routes</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Primary CTA Button -->
+                        <div class="mt-4">
+                            <button class="btn-uber-black" onclick="simulateAiPlanner()" type="button">
+                                <i class="bi bi-search"></i>
+                                <span class="">Find Best Routes</span>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- INLINE LOADING STATE (5 Multi-step Planning Indicators) -->
+                    <div class="d-none uber-card" id="ai-loading-box" style="border: 2px solid #000000;">
+                        <div class="d-flex align-items-center justify-content-between mb-3">
+                            <div class="d-flex align-items-center gap-2">
+                                <div class="spinner-border spinner-border-sm text-dark" role="status"></div>
+                                <h3 class="m-0 fw-bold" style="font-size: 17px; color: #111111;">Planning your
+                                    journey...</h3>
+                            </div>
+                            <span class="badge bg-black text-white px-2.5 py-1 rounded-pill"
+                                style="font-size: 11px;">Multimodal AI</span>
+                        </div>
+                        <div class="d-flex flex-column gap-2.5 mt-2">
+                            <!-- Step 1 -->
+                            <div class="d-flex align-items-center gap-2 text-dark"
+                                style="font-size: 13.5px; font-weight: 500;">
+                                <i class="bi bi-check-circle-fill text-success" style="font-size: 16px;"></i>
+                                <span class="">Understanding your request</span>
+                            </div>
+                            <!-- Step 2 -->
+                            <div class="d-flex align-items-center gap-2 text-dark"
+                                style="font-size: 13.5px; font-weight: 500;">
+                                <i class="bi bi-check-circle-fill text-success" style="font-size: 16px;"></i>
+                                <span class="">Locating nearby transit</span>
+                            </div>
+                            <!-- Step 3 -->
+                            <div class="d-flex align-items-center gap-2 text-dark"
+                                style="font-size: 13.5px; font-weight: 500;">
+                                <i class="bi bi-check-circle-fill text-success" style="font-size: 16px;"></i>
+                                <span class="">Finding possible routes</span>
+                            </div>
+                            <!-- Step 4 -->
+                            <div class="d-flex align-items-center gap-2 fw-bold"
+                                style="font-size: 13.5px; color: var(--accent-blue);">
+                                <span class="spinner-border spinner-border-sm" role="status"
+                                    style="width: 15px; height: 15px; border-width: 2px;"></span>
+                                <span class="">Checking weather &amp; micro-congestion</span>
+                            </div>
+                            <!-- Step 5 -->
+                            <div class="d-flex align-items-center gap-2 text-muted" style="font-size: 13.5px;">
+                                <i class="bi bi-circle" style="font-size: 15px; color: #D1D5DB;"></i>
+                                <span class="">Ranking recommendations</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- RESULTS SECTION WRAPPER -->
+                    <div class="d-flex flex-column gap-3" id="results-container">
+                        <!-- RESULT SUMMARY HEADER -->
+                        <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 px-1">
+                            <div class="d-flex align-items-center gap-2 flex-wrap">
+                                <span class="fw-bold" style="font-size: 18px; color: #111111;">Shahbag</span>
+                                <i class="bi bi-arrow-right text-dark"></i>
+                                <span class="fw-bold" style="font-size: 18px; color: #111111;">Motijheel</span>
+                                <span class="text-muted ms-1" style="font-size: 13px;">· 3 routes found · Updated just
+                                    now</span>
+                            </div>
+                            <!-- Weather Summary Badge -->
+                            <div class="d-inline-flex align-items-center gap-1.5 px-2.5 py-1 rounded-pill bg-white border"
+                                style="border-color: #E5E7EB; font-size: 12.5px; font-weight: 600; color: #111111;">
+                                <i class="bi bi-cloud-fill text-muted"></i>
+                                <span class="">32°C Cloudy</span>
+                            </div>
+                        </div>
+                        <!-- WEATHER NOTICE WARNING CARD -->
+                        <div class="p-3 rounded-3 d-flex align-items-start gap-2.5"
+                            style="background-color: var(--color-amber-bg); border: 1px solid var(--color-amber-border);">
+                            <i class="bi bi-cloud-rain-heavy-fill flex-shrink-0"
+                                style="color: var(--color-amber); font-size: 18px; margin-top: 1px;"></i>
+                            <p class="m-0" style="font-size: 13px; color: #78350F; line-height: 1.4;">
+                                <strong>Rain expected:</strong> Routes with more walking may receive a lower
+                                recommendation score. MRT Line 6 is recommended for indoor dry transfers.
+                            </p>
+                        </div>
+                        <!-- RECOMMENDED ROUTE CARD (HERO FEATURED) -->
+                        <div class="uber-card position-relative" style="border: 2px solid #000000;">
+                            <!-- Header Badges & Save Bookmark Button -->
+                            <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+                                <div class="d-flex align-items-center gap-2 flex-wrap">
+                                    <span class="badge bg-black text-white px-3 py-1.5 rounded-pill fw-bold"
+                                        style="font-size: 12px; letter-spacing: 0.02em;">
+                                        ★ Recommended · Best match
+                                    </span>
+                                    <span class="fw-bold" style="color: var(--color-success); font-size: 13px;">
+                                        <i class="bi bi-clock-history me-1"></i>Expected: 8:42 PM (18 min early)
+                                    </span>
+                                </div>
+                                <!-- Bookmark Button -->
+                                <button aria-label="Save this route" class="btn-bookmark-action saved"
+                                    id="btn-save-route-rec" onclick="toggleSaveRoute(this, 'route-rec')"
+                                    title="Bookmark Route" type="button">
+                                    <i class="bi bi-bookmark-fill" id="icon-save-route-rec"></i>
+                                </button>
+                            </div>
+                            <!-- Multimodal Sequence Pills -->
+                            <div class="d-flex align-items-center gap-2 flex-wrap mb-3">
+                                <span class="route-step-pill">
+                                    <i class="bi bi-person-walking"></i> Walk
+                                </span>
+                                <i class="bi bi-chevron-right text-muted" style="font-size: 12px;"></i>
+                                <span class="route-step-pill metro">
+                                    <i class="bi bi-train-front"></i> Metro (MRT Line 6)
+                                </span>
+                                <i class="bi bi-chevron-right text-muted" style="font-size: 12px;"></i>
+                                <span class="route-step-pill">
+                                    <i class="bi bi-person-walking"></i> Walk
+                                </span>
+                            </div>
+                            <!-- 2x2 Clean Grid on Mobile (390px), 4 Columns on Desktop -->
+                            <div class="row g-2 mb-3">
+                                <div class="col-6 col-md-3">
+                                    <div class="metric-box">
+                                        <span class="metric-label">Travel Time</span>
+                                        <span class="metric-value">28 min</span>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-3">
+                                    <div class="metric-box">
+                                        <span class="metric-label">Est. Cost</span>
+                                        <span class="metric-value">৳40</span>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-3">
+                                    <div class="metric-box">
+                                        <span class="metric-label">Transfers</span>
+                                        <span class="metric-value">0</span>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-3">
+                                    <div class="metric-box">
+                                        <span class="metric-label">Walking</span>
+                                        <span class="metric-value" style="color: var(--color-success);">0.3 km</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Expandable Timeline Details -->
+                            <div class="pt-2 border-top" style="border-color: #F0F0F0 !important;">
+                                <button class="accordion-toggle-btn py-1"
+                                    onclick="toggleAccordion('route-details-collapse', 'details-chevron')"
+                                    type="button">
+                                    <span class="d-flex align-items-center gap-1.5 fw-bold"
+                                        style="color: #111111; font-size: 13.5px;">
+                                        <i class="bi bi-list-ul"></i>
+                                        <span class="">View Route Details</span>
+                                    </span>
+                                    <i class="bi bi-chevron-down" id="details-chevron"></i>
+                                </button>
+                                <div class="d-none mt-3 pt-2" id="route-details-collapse">
+                                    <div class="timeline-track">
+                                        <!-- Node 1 -->
+                                        <div class="timeline-node">
+                                            <div class="timeline-dot"></div>
+                                            <div class="fw-bold" style="font-size: 14px; color: #111111;">Shahbag</div>
+                                            <div class="text-muted" style="font-size: 12.5px;">
+                                                <i class="bi bi-person-walking"></i> Walk · 3 min · 0.2 km
+                                            </div>
+                                        </div>
+                                        <!-- Node 2 -->
+                                        <div class="timeline-node">
+                                            <div class="timeline-dot metro-dot"></div>
+                                            <div class="fw-bold" style="font-size: 14px; color: #111111;">Shahbag Metro
+                                                Station</div>
+                                            <div class="p-2.5 my-1.5 rounded-2"
+                                                style="background: #F3F4F6; border: 1px solid var(--border-color);">
+                                                <div class="d-flex justify-content-between fw-bold"
+                                                    style="font-size: 13px; color: #111111;">
+                                                    <span class=""><i class="bi bi-train-front me-1"></i>Metro (Line 6)
+                                                        · 18 min</span>
+                                                    <span class="">৳40</span>
+                                                </div>
+                                                <div class="text-muted mt-0.5" style="font-size: 11.5px;">Southbound
+                                                    platform · Every 3 min</div>
+                                            </div>
+                                        </div>
+                                        <!-- Node 3 -->
+                                        <div class="timeline-node">
+                                            <div class="timeline-dot"></div>
+                                            <div class="fw-bold" style="font-size: 14px; color: #111111;">Motijheel
+                                                Metro Station</div>
+                                            <div class="text-muted" style="font-size: 12.5px;">
+                                                <i class="bi bi-person-walking"></i> Walk · 4 min · 0.1 km
+                                            </div>
+                                        </div>
+                                        <!-- Node 4 -->
+                                        <div class="timeline-node">
+                                            <div class="timeline-dot end-dot"></div>
+                                            <div class="fw-bold" style="font-size: 14px; color: #111111;">Motijheel
+                                            </div>
+                                            <div class="fw-semibold"
+                                                style="color: var(--color-success); font-size: 12.5px;">
+                                                Arrive at destination (8:42 PM)
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- OTHER ROUTES SECTION -->
+                        <div class="mt-2">
+                            <h3 class="fw-bold mb-3" style="font-size: 16px; color: #111111;">Other Routes</h3>
+                            <div class="d-flex flex-column gap-3">
+                                <!-- Route 2 -->
+                                <div class="uber-card py-3 position-relative">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <div class="d-flex align-items-center gap-2">
+                                            <span class="fw-bold" style="font-size: 14px; color: #111111;">Route
+                                                2</span>
+                                            <span class="badge bg-light text-dark border px-2 py-0.5 fw-semibold"
+                                                style="font-size: 11px;">Lowest Cost</span>
+                                        </div>
+                                        <div class="d-flex align-items-center gap-3">
+                                            <span class="fw-bold" style="font-size: 16px; color: #111111;">৳30</span>
+                                            <button aria-label="Save route 2" class="btn-bookmark-action"
+                                                id="btn-save-route-2" onclick="toggleSaveRoute(this, 'route-2')"
+                                                title="Save Route" type="button">
+                                                <i class="bi bi-bookmark" id="icon-save-route-2"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center gap-2 flex-wrap mb-2">
+                                        <span class="route-step-pill bus">
+                                            <i class="bi bi-bus-front"></i> Azimpur-Motijheel Express
+                                        </span>
+                                        <i class="bi bi-arrow-right text-muted" style="font-size: 12px;"></i>
+                                        <span class="route-step-pill">
+                                            <i class="bi bi-person-walking"></i> Walk
+                                        </span>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center pt-2 border-top text-muted"
+                                        style="font-size: 12.5px; border-color: #F3F4F6 !important;">
+                                        <div class="d-flex gap-3">
+                                            <span class=""><strong>35 min</strong></span>
+                                            <span class=""><strong>1</strong> transfer</span>
+                                            <span class=""><strong>0.5 km</strong> walk</span>
+                                        </div>
+                                        <button
+                                            class="btn btn-sm btn-link text-dark fw-bold text-decoration-none p-0 d-flex align-items-center gap-1"
+                                            onclick="showRouteNotice('Azimpur-Motijheel Express')" type="button">
+                                            <span class="">View Details</span>
+                                            <i class="bi bi-chevron-right" style="font-size: 11px;"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <!-- Route 3 -->
+                                <div class="uber-card py-3 position-relative">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <div class="d-flex align-items-center gap-2">
+                                            <span class="fw-bold" style="font-size: 14px; color: #111111;">Route
+                                                3</span>
+                                            <span class="badge bg-light text-dark border px-2 py-0.5 fw-semibold"
+                                                style="font-size: 11px;">Less Walking</span>
+                                        </div>
+                                        <div class="d-flex align-items-center gap-3">
+                                            <span class="fw-bold" style="font-size: 16px; color: #111111;">৳50</span>
+                                            <button aria-label="Save route 3" class="btn-bookmark-action"
+                                                id="btn-save-route-3" onclick="toggleSaveRoute(this, 'route-3')"
+                                                title="Save Route" type="button">
+                                                <i class="bi bi-bookmark" id="icon-save-route-3"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center gap-2 flex-wrap mb-2">
+                                        <span class="route-step-pill bus">
+                                            <i class="bi bi-bus-front"></i> Feeder Bus
+                                        </span>
+                                        <i class="bi bi-arrow-right text-muted" style="font-size: 12px;"></i>
+                                        <span class="route-step-pill metro">
+                                            <i class="bi bi-train-front"></i> Metro Line 6
+                                        </span>
+                                        <i class="bi bi-arrow-right text-muted" style="font-size: 12px;"></i>
+                                        <span class="route-step-pill">
+                                            <i class="bi bi-person-walking"></i> Walk
+                                        </span>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center pt-2 border-top text-muted"
+                                        style="font-size: 12.5px; border-color: #F3F4F6 !important;">
+                                        <div class="d-flex gap-3">
+                                            <span class=""><strong>31 min</strong></span>
+                                            <span class=""><strong>1</strong> transfer</span>
+                                            <span class=""><strong>0.4 km</strong> walk</span>
+                                        </div>
+                                        <button
+                                            class="btn btn-sm btn-link text-dark fw-bold text-decoration-none p-0 d-flex align-items-center gap-1"
+                                            onclick="showRouteNotice('Feeder Bus + Metro Line 6')" type="button">
+                                            <span class="">View Details</span>
+                                            <i class="bi bi-chevron-right" style="font-size: 11px;"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- EMPTY STATE INDICATOR -->
+                        <div class="p-3 rounded-3 text-center border"
+                            style="background-color: #FFFFFF; border-color: var(--border-color); border-style: dashed !important;">
+                            <i class="bi bi-compass text-muted" style="font-size: 22px;"></i>
+                            <p class="text-muted m-0 mt-1" style="font-size: 12.5px;">
+                                Enter a destination or adjust preferences to recalculate personalized Dhaka itineraries.
+                            </p>
+                        </div>
+                        <!-- ERROR STATES PREVIEW (Collapsible Alert Drawer) -->
+                        <div class="uber-card p-3">
+                            <button class="accordion-toggle-btn py-0"
+                                onclick="toggleAccordion('error-preview-collapse', 'error-chevron')" type="button">
+                                <span class="d-flex align-items-center gap-2 text-muted fw-semibold"
+                                    style="font-size: 13px;">
+                                    <i class="bi bi-shield-check text-dark"></i>
+                                    <span class="">Production Error Handling States (Click to Preview)</span>
+                                </span>
+                                <i class="bi bi-chevron-down" id="error-chevron"></i>
+                            </button>
+                            <div class="d-none mt-3 pt-2 d-flex flex-column gap-2" id="error-preview-collapse">
+                                <div class="alert alert-light border d-flex align-items-start gap-2.5 m-0 py-2.5 px-3 rounded-2"
+                                    role="alert" style="border-color: #E5E7EB;">
+                                    <i class="bi bi-search text-muted mt-0.5"></i>
+                                    <div class="" style="font-size: 13px; color: #111111;">
+                                        <strong>No suitable route found</strong> — Try increasing your budget or travel
+                                        time.
+                                    </div>
+                                </div>
+                                <div class="alert alert-light border d-flex align-items-start gap-2.5 m-0 py-2.5 px-3 rounded-2"
+                                    role="alert" style="border-color: #E5E7EB;">
+                                    <i class="bi bi-geo-alt text-muted mt-0.5"></i>
+                                    <div class="" style="font-size: 13px; color: #111111;">
+                                        <strong>Location not found</strong> — Please check the location and try again.
+                                    </div>
+                                </div>
+                                <div class="alert alert-light border d-flex align-items-start gap-2.5 m-0 py-2.5 px-3 rounded-2"
+                                    role="alert" style="border-color: #E5E7EB;">
+                                    <i class="bi bi-cloud-slash text-muted mt-0.5"></i>
+                                    <div class="" style="font-size: 13px; color: #111111;">
+                                        <strong>Smart journey service is temporarily unavailable</strong> — Please try
+                                        again later.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- RIGHT COLUMN: Sticky Map & Urban Weather (35% / col-lg-4) -->
+                <div class="col-lg-4 sticky-side-panel d-flex flex-column gap-3">
+                    <!-- MAP PLACEHOLDER CARD -->
+                    <div class="uber-card p-3">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <div>
+                                <span class="d-block text-muted tracking-wider-sm fw-bold" style="font-size: 11px;">LIVE
+                                    ROUTE VISUALIZATION</span>
+                                <h2 class="fw-bold m-0" style="font-size: 15px; color: #111111;">Route Map</h2>
+                            </div>
+                            <span class="badge bg-light text-dark border px-2 py-1"
+                                style="font-size: 11px; font-weight: 600;">
+                                Shahbag → Motijheel
+                            </span>
+                        </div>
+                        <!-- Static Vector Map Placeholder: https://lh3.googleusercontent.com/aida/AEtjO1XpTNqFzqOaNaxwZJwuZFMbKQiObhZzE5Kw7UkMZaEI5_4SRLzs-LaHXtqpPC7IMpqjZGl3iK--Djb4-wnNUnGva5gLN8KW9H6pqDn5gmU1uxAoaCG81FdByYgMoKeqBRNn-h4rlArgu0oLKPwHRLg5WU1kWtWiNhxjVPI1mnrZvWjF7AY9mYRgyTnhJ0K06tQRYEY26JkM5IVnKE9ZCTSUSgtCcyK9ZCRPUjTuSwQIrHEcDCNG4ypfiA -->
+                        <div class="position-relative rounded-3 overflow-hidden border"
+                            style="border-color: var(--border-color); background: #F3F4F6;">
+                            <img alt="Clean Uber-inspired monochrome transit map placeholder for Dhaka Shahbag to Motijheel multimodal corridor"
+                                class="img-fluid w-100 d-block"
+                                src="https://lh3.googleusercontent.com/aida/AEtjO1XpTNqFzqOaNaxwZJwuZFMbKQiObhZzE5Kw7UkMZaEI5_4SRLzs-LaHXtqpPC7IMpqjZGl3iK--Djb4-wnNUnGva5gLN8KW9H6pqDn5gmU1uxAoaCG81FdByYgMoKeqBRNn-h4rlArgu0oLKPwHRLg5WU1kWtWiNhxjVPI1mnrZvWjF7AY9mYRgyTnhJ0K06tQRYEY26JkM5IVnKE9ZCTSUSgtCcyK9ZCRPUjTuSwQIrHEcDCNG4ypfiA"
+                                style="object-fit: cover; aspect-ratio: 4/3;" />
+                            <div class="position-absolute top-0 start-0 m-2 px-2 py-1 rounded bg-white shadow-xs border d-flex align-items-center gap-1.5"
+                                style="font-size: 11px; font-weight: 600; border-color: #E5E7EB;">
+                                <span class="pulse-dot" style="width: 6px; height: 6px;"></span>
+                                <span class="">MRT Active</span>
+                            </div>
+                        </div>
+                        <p class="text-muted text-center mt-2.5 mb-1" style="font-size: 12px;">
+                            Interactive route visualization will appear here.
+                        </p>
+                        <div class="row g-2 mt-1">
+                            <div class="col-6">
+                                <button
+                                    class="btn btn-outline-secondary w-100 btn-sm bg-white text-dark border py-1.5 fw-semibold"
+                                    onclick="showToast('Transit Map Layers updated')"
+                                    style="font-size: 12px; border-color: #E5E7EB;" type="button">
+                                    <i class="bi bi-layers me-1"></i>Layers
+                                </button>
+                            </div>
+                            <div class="col-6">
+                                <button
+                                    class="btn btn-outline-secondary w-100 btn-sm bg-white text-dark border py-1.5 fw-semibold"
+                                    onclick="showToast('Fullscreen map preview opened')"
+                                    style="font-size: 12px; border-color: #E5E7EB;" type="button">
+                                    <i class="bi bi-arrows-fullscreen me-1"></i>Expand
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- REAL-TIME WEATHER & CONGESTION CONTEXT CARD -->
+                    <div class="uber-card p-3">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="fw-bold" style="font-size: 14px; color: #111111;">Dhaka Transit Weather</span>
+                            <span class="text-muted fw-semibold" style="font-size: 11.5px;">Live Radar</span>
+                        </div>
+                        <div class="p-3 rounded-2 mb-2.5 d-flex justify-content-between align-items-center"
+                            style="background-color: #F9FAFB; border: 1px solid var(--border-color);">
+                            <div class="d-flex align-items-center gap-2.5">
+                                <i class="bi bi-cloud-sun text-dark" style="font-size: 28px;"></i>
+                                <div>
+                                    <span class="d-block fw-bold"
+                                        style="font-size: 18px; color: #111111; line-height: 1.1;">32° C</span>
+                                    <span class="text-muted" style="font-size: 12px;">Overcast · High Humidity</span>
+                                </div>
+                            </div>
+                            <div class="text-end">
+                                <span class="d-block fw-semibold"
+                                    style="font-size: 12px; color: var(--color-amber);">Rain: 65%</span>
+                                <span class="text-muted" style="font-size: 11.5px;">AQI 142 (Moderate)</span>
+                            </div>
+                        </div>
+                        <!-- Commuter Advisory -->
+                        <div class="p-2.5 rounded-2"
+                            style="background: #FFFFFF; border: 1px solid var(--border-color);">
+                            <div class="d-flex align-items-center gap-1.5 fw-bold text-dark mb-1"
+                                style="font-size: 12px;">
+                                <i class="bi bi-lightbulb-fill text-dark"></i>
+                                <span class="">Commuter Advisory</span>
+                            </div>
+                            <p class="text-muted m-0" style="font-size: 12px; line-height: 1.4;">
+                                Farmgate–Shahbag corridor experiencing moderate surface traffic. MRT Line 6 recommended
+                                to bypass gridlock with 100% on-time frequency.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- ========================================== -->
+        <!-- SECTION 2: TRANSIT LINES (Informational)   -->
+        <!-- ========================================== -->
+        <section class="tab-content-panel" id="tab-lines">
+            <div class="mb-4">
+                <span class="d-block text-muted tracking-wider-sm fw-bold" style="font-size: 12px;">TRANSIT
+                    DIRECTORY</span>
+                <h1 class="fw-bold mt-1 mb-1"
+                    style="color: #111111; font-size: clamp(24px, 4vw, 32px); letter-spacing: -0.02em;">
+                    Dhaka Transit Lines
+                </h1>
+                <p class="text-muted mb-3" style="font-size: 14.5px;">
+                    Explore active metro rail corridors and express feeder bus routes across the metropolitan network.
+                </p>
+                <!-- Segmented Filter Chips -->
+                <div class="d-flex flex-wrap gap-2 mb-4" id="line-filters-wrap">
+                    <button class="line-filter-chip active" onclick="filterLines('all', this)" type="button">
+                        All Lines (4)
+                    </button>
+                    <button class="line-filter-chip" onclick="filterLines('metro', this)" type="button">
+                        <i class="bi bi-train-front me-1"></i>Metro Rail
+                    </button>
+                    <button class="line-filter-chip" onclick="filterLines('bus', this)" type="button">
+                        <i class="bi bi-bus-front me-1"></i>Bus Express
+                    </button>
+                </div>
+            </div>
+            <div class="row g-3" id="transit-lines-container">
+                <!-- Line Card 1: MRT Line 6 -->
+                <div class="col-12 col-md-6 line-item-card" data-category="metro">
+                    <div class="uber-card h-100 p-4 d-flex flex-column justify-content-between"
+                        style="border: 2px solid #000000;">
+                        <div>
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <div>
+                                    <span class="badge bg-black text-white px-2.5 py-1 rounded-pill fw-bold mb-1"
+                                        style="font-size: 11px;">MRT-06</span>
+                                    <h3 class="fw-bold m-0" style="font-size: 18px; color: #111111;">MRT Line 6 (Metro
+                                        Rail)</h3>
+                                </div>
+                                <span class="badge rounded-pill px-2.5 py-1 fw-bold"
+                                    style="background-color: #ECFDF5; color: #065F46; border: 1px solid #A7F3D0; font-size: 11.5px;">
+                                    <span class="pulse-dot d-inline-block me-1"
+                                        style="width: 6px; height: 6px;"></span>Active • High Speed
+                                </span>
+                            </div>
+                            <p class="text-muted fw-semibold mb-3" style="font-size: 13.5px;">
+                                <i class="bi bi-arrow-left-right me-1 text-dark"></i> Uttara North ⇄ Motijheel
+                                (extending to Kamalapur)
+                            </p>
+                            <div class="p-3 rounded-3 mb-3"
+                                style="background-color: #F9FAFB; border: 1px solid var(--border-color);">
+                                <span class="d-block text-muted tracking-wider-sm fw-bold mb-1"
+                                    style="font-size: 10.5px;">KEY STATION SEQUENCE</span>
+                                <div class="d-flex align-items-center flex-wrap gap-1 fw-semibold"
+                                    style="font-size: 12px; color: #111111;">
+                                    <span>Uttara North</span>
+                                    <i class="bi bi-arrow-right text-muted" style="font-size: 10px;"></i>
+                                    <span>Mirpur 10</span>
+                                    <i class="bi bi-arrow-right text-muted" style="font-size: 10px;"></i>
+                                    <span>Agargaon</span>
+                                    <i class="bi bi-arrow-right text-muted" style="font-size: 10px;"></i>
+                                    <span>Farmgate</span>
+                                    <i class="bi bi-arrow-right text-muted" style="font-size: 10px;"></i>
+                                    <span>Shahbag</span>
+                                    <i class="bi bi-arrow-right text-muted" style="font-size: 10px;"></i>
+                                    <span>DU</span>
+                                    <i class="bi bi-arrow-right text-muted" style="font-size: 10px;"></i>
+                                    <span class="fw-bold">Motijheel</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pt-3 border-top d-flex justify-content-between align-items-center flex-wrap gap-2"
+                            style="border-color: #F3F4F6 !important; font-size: 12px; color: #4B5563;">
+                            <div><i class="bi bi-clock me-1"></i>07:10 AM - 09:40 PM</div>
+                            <div><i class="bi bi-arrow-repeat me-1"></i>Every 5-8 mins</div>
+                            <div class="fw-bold text-dark">৳20 - ৳100</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Line Card 2: MRT Line 1 -->
+                <div class="col-12 col-md-6 line-item-card" data-category="metro">
+                    <div class="uber-card h-100 p-4 d-flex flex-column justify-content-between">
+                        <div>
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <div>
+                                    <span class="badge bg-secondary text-white px-2.5 py-1 rounded-pill fw-bold mb-1"
+                                        style="font-size: 11px;">MRT-01</span>
+                                    <h3 class="fw-bold m-0" style="font-size: 18px; color: #111111;">MRT Line 1
+                                        (Airfield - Kamalapur)</h3>
+                                </div>
+                                <span class="badge rounded-pill px-2.5 py-1 fw-bold"
+                                    style="background-color: var(--color-amber-bg); color: #B45309; border: 1px solid var(--color-amber-border); font-size: 11.5px;">
+                                    Under Construction
+                                </span>
+                            </div>
+                            <p class="text-muted fw-semibold mb-3" style="font-size: 13.5px;">
+                                <i class="bi bi-arrow-left-right me-1 text-dark"></i> Airport ⇄ Kamalapur &amp; Natun
+                                Bazar ⇄ Purbachal
+                            </p>
+                            <div class="p-3 rounded-3 mb-3"
+                                style="background-color: #F9FAFB; border: 1px solid var(--border-color);">
+                                <span class="d-block text-muted tracking-wider-sm fw-bold mb-1"
+                                    style="font-size: 10.5px;">LINE HIGHLIGHTS</span>
+                                <p class="m-0 text-muted" style="font-size: 12.5px; line-height: 1.4;">
+                                    First underground multimodal subway system in Dhaka. 31.2 km network with 19
+                                    underground stations and 7 elevated stations.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="pt-3 border-top d-flex justify-content-between align-items-center flex-wrap gap-2"
+                            style="border-color: #F3F4F6 !important; font-size: 12px; color: #4B5563;">
+                            <div><i class="bi bi-geo-alt me-1"></i>31.2 km Length</div>
+                            <div><i class="bi bi-building me-1"></i>26 Stations</div>
+                            <div class="fw-bold text-dark">Target 2026</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Line Card 3: Azimpur - Motijheel Express Bus -->
+                <div class="col-12 col-md-6 line-item-card" data-category="bus">
+                    <div class="uber-card h-100 p-4 d-flex flex-column justify-content-between">
+                        <div>
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <div>
+                                    <span class="badge bg-primary text-white px-2.5 py-1 rounded-pill fw-bold mb-1"
+                                        style="font-size: 11px;">EXP-BUS</span>
+                                    <h3 class="fw-bold m-0" style="font-size: 18px; color: #111111;">Azimpur – Motijheel
+                                        Express Bus</h3>
+                                </div>
+                                <span class="badge rounded-pill px-2.5 py-1 fw-bold"
+                                    style="background-color: #EFF6FF; color: #1D4ED8; border: 1px solid #BFDBFE; font-size: 11.5px;">
+                                    AC Feeder Service
+                                </span>
+                            </div>
+                            <p class="text-muted fw-semibold mb-3" style="font-size: 13.5px;">
+                                <i class="bi bi-arrow-left-right me-1 text-dark"></i> Azimpur Estate ⇄ Motijheel Shapla
+                                Chattar
+                            </p>
+                            <div class="p-3 rounded-3 mb-3"
+                                style="background-color: #F9FAFB; border: 1px solid var(--border-color);">
+                                <span class="d-block text-muted tracking-wider-sm fw-bold mb-1"
+                                    style="font-size: 10.5px;">ROUTE STOPS</span>
+                                <div class="d-flex align-items-center flex-wrap gap-1 fw-semibold"
+                                    style="font-size: 12px; color: #111111;">
+                                    <span>Azimpur</span>
+                                    <i class="bi bi-arrow-right text-muted" style="font-size: 10px;"></i>
+                                    <span>New Market</span>
+                                    <i class="bi bi-arrow-right text-muted" style="font-size: 10px;"></i>
+                                    <span>Science Lab</span>
+                                    <i class="bi bi-arrow-right text-muted" style="font-size: 10px;"></i>
+                                    <span>Shahbag</span>
+                                    <i class="bi bi-arrow-right text-muted" style="font-size: 10px;"></i>
+                                    <span>Press Club</span>
+                                    <i class="bi bi-arrow-right text-muted" style="font-size: 10px;"></i>
+                                    <span class="fw-bold">Motijheel</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pt-3 border-top d-flex justify-content-between align-items-center flex-wrap gap-2"
+                            style="border-color: #F3F4F6 !important; font-size: 12px; color: #4B5563;">
+                            <div><i class="bi bi-clock me-1"></i>06:30 AM - 10:30 PM</div>
+                            <div><i class="bi bi-arrow-repeat me-1"></i>Every 10 mins</div>
+                            <div class="fw-bold text-dark">৳30 flat</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Line Card 4: Mirpur – Gulshan Connect Shuttle -->
+                <div class="col-12 col-md-6 line-item-card" data-category="bus">
+                    <div class="uber-card h-100 p-4 d-flex flex-column justify-content-between">
+                        <div>
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <div>
+                                    <span class="badge bg-dark text-white px-2.5 py-1 rounded-pill fw-bold mb-1"
+                                        style="font-size: 11px;">SHTL-04</span>
+                                    <h3 class="fw-bold m-0" style="font-size: 18px; color: #111111;">Mirpur – Gulshan
+                                        Connect Shuttle</h3>
+                                </div>
+                                <span class="badge rounded-pill px-2.5 py-1 fw-bold"
+                                    style="background-color: #F3F4F6; color: #111111; border: 1px solid #D1D5DB; font-size: 11.5px;">
+                                    Smart Shuttle
+                                </span>
+                            </div>
+                            <p class="text-muted fw-semibold mb-3" style="font-size: 13.5px;">
+                                <i class="bi bi-arrow-left-right me-1 text-dark"></i> Mirpur 12 ⇄ Gulshan 2 Circle
+                            </p>
+                            <div class="p-3 rounded-3 mb-3"
+                                style="background-color: #F9FAFB; border: 1px solid var(--border-color);">
+                                <span class="d-block text-muted tracking-wider-sm fw-bold mb-1"
+                                    style="font-size: 10.5px;">SHUTTLE STOPS</span>
+                                <div class="d-flex align-items-center flex-wrap gap-1 fw-semibold"
+                                    style="font-size: 12px; color: #111111;">
+                                    <span>Mirpur 12</span>
+                                    <i class="bi bi-arrow-right text-muted" style="font-size: 10px;"></i>
+                                    <span>Mirpur 10 (MRT Interchange)</span>
+                                    <i class="bi bi-arrow-right text-muted" style="font-size: 10px;"></i>
+                                    <span>Banani</span>
+                                    <i class="bi bi-arrow-right text-muted" style="font-size: 10px;"></i>
+                                    <span class="fw-bold">Gulshan 2</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pt-3 border-top d-flex justify-content-between align-items-center flex-wrap gap-2"
+                            style="border-color: #F3F4F6 !important; font-size: 12px; color: #4B5563;">
+                            <div><i class="bi bi-credit-card me-1"></i>Rapid Pass Ready</div>
+                            <div><i class="bi bi-snow me-1"></i>AC Cooled</div>
+                            <div class="fw-bold text-dark">৳45</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- ========================================== -->
+        <!-- SECTION 3: SAVED (Saved Routes & Bookmarks) -->
+        <!-- ========================================== -->
+        <section class="tab-content-panel" id="tab-saved">
+            <div class="mb-4">
+                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                    <div>
+                        <span class="d-block text-muted tracking-wider-sm fw-bold"
+                            style="font-size: 12px;">FAVORITES</span>
+                        <h1 class="fw-bold mt-1 mb-1"
+                            style="color: #111111; font-size: clamp(24px, 4vw, 32px); letter-spacing: -0.02em;">
+                            Saved Routes
+                        </h1>
+                        <p class="text-muted mb-0" style="font-size: 14.5px;">
+                            Quickly access your pinned daily commutes and transit combinations.
+                        </p>
+                    </div>
+                    <span class="badge bg-black text-white px-3 py-1.5 rounded-pill fw-bold" id="saved-header-counter"
+                        style="font-size: 12px;">
+                        1 Saved Journey
+                    </span>
+                </div>
+            </div>
+            <!-- SAVED ROUTES LIST CONTAINER -->
+            <div class="d-flex flex-column gap-3" id="saved-cards-list">
+                <!-- SAVED CARD 1 (Shahbag to Motijheel) -->
+                <div class="uber-card position-relative saved-route-card" id="saved-item-route-rec"
+                    style="border: 2px solid #000000;">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <div class="d-flex align-items-center gap-2 flex-wrap">
+                            <h3 class="fw-bold m-0" style="font-size: 17px; color: #111111;">Shahbag → Motijheel</h3>
+                            <span class="badge bg-black text-white px-2 py-0.5 rounded-pill fw-semibold"
+                                style="font-size: 11px;">Fastest</span>
+                        </div>
+                        <!-- Remove button -->
+                        <button aria-label="Remove saved route"
+                            class="btn btn-sm btn-outline-danger border-0 d-flex align-items-center gap-1 py-1 px-2 rounded-2"
+                            onclick="removeSavedRoute('route-rec')" style="font-size: 12px; font-weight: 600;"
+                            type="button">
+                            <i class="bi bi-trash3"></i>
+                            <span>Remove</span>
+                        </button>
+                    </div>
+                    <div class="d-flex align-items-center gap-2 flex-wrap mb-3">
+                        <span class="route-step-pill">
+                            <i class="bi bi-person-walking"></i> Walk
+                        </span>
+                        <i class="bi bi-arrow-right text-muted" style="font-size: 12px;"></i>
+                        <span class="route-step-pill metro">
+                            <i class="bi bi-train-front"></i> Metro MRT Line 6
+                        </span>
+                        <i class="bi bi-arrow-right text-muted" style="font-size: 12px;"></i>
+                        <span class="route-step-pill">
+                            <i class="bi bi-person-walking"></i> Walk
+                        </span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center pt-2 border-top text-muted"
+                        style="font-size: 12.5px; border-color: #F3F4F6 !important;">
+                        <div class="d-flex gap-3">
+                            <span><strong class="text-dark">28 min</strong></span>
+                            <span><strong class="text-dark">৳40</strong> fare</span>
+                            <span><strong>0</strong> transfers</span>
+                            <span><strong>0.3 km</strong> walk</span>
+                        </div>
+                        <button class="btn btn-sm btn-dark px-3 py-1 rounded-pill fw-semibold"
+                            onclick="loadSavedRouteInPlanner('Shahbag', 'Motijheel')" style="font-size: 12px;"
+                            type="button">
+                            Open in Planner
+                        </button>
+                    </div>
+                </div>
+                <!-- SAVED CARD 2 (Uttara North to Farmgate) -->
+                <div class="uber-card position-relative saved-route-card" id="saved-item-route-uttara">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <div class="d-flex align-items-center gap-2 flex-wrap">
+                            <h3 class="fw-bold m-0" style="font-size: 17px; color: #111111;">Uttara North → Farmgate
+                            </h3>
+                            <span class="badge bg-light text-dark border px-2 py-0.5 rounded-pill fw-semibold"
+                                style="font-size: 11px;">Lowest Cost</span>
+                        </div>
+                        <!-- Remove button -->
+                        <button aria-label="Remove saved route"
+                            class="btn btn-sm btn-outline-danger border-0 d-flex align-items-center gap-1 py-1 px-2 rounded-2"
+                            onclick="removeSavedRoute('route-uttara')" style="font-size: 12px; font-weight: 600;"
+                            type="button">
+                            <i class="bi bi-trash3"></i>
+                            <span>Remove</span>
+                        </button>
+                    </div>
+                    <div class="d-flex align-items-center gap-2 flex-wrap mb-3">
+                        <span class="route-step-pill metro">
+                            <i class="bi bi-train-front"></i> Metro MRT Line 6
+                        </span>
+                        <i class="bi bi-arrow-right text-muted" style="font-size: 12px;"></i>
+                        <span class="route-step-pill">
+                            <i class="bi bi-person-walking"></i> Walk 2 min
+                        </span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center pt-2 border-top text-muted"
+                        style="font-size: 12.5px; border-color: #F3F4F6 !important;">
+                        <div class="d-flex gap-3">
+                            <span><strong class="text-dark">18 min</strong></span>
+                            <span><strong class="text-dark">৳30</strong> fare</span>
+                            <span><strong>0</strong> transfers</span>
+                            <span><strong>0.2 km</strong> walk</span>
+                        </div>
+                        <button class="btn btn-sm btn-dark px-3 py-1 rounded-pill fw-semibold"
+                            onclick="loadSavedRouteInPlanner('Uttara North', 'Farmgate')" style="font-size: 12px;"
+                            type="button">
+                            Open in Planner
+                        </button>
+                    </div>
+                </div>
+                <!-- DYNAMIC ROUTE 2 CARD CONTAINER (Initially Hidden) -->
+                <div class="uber-card position-relative saved-route-card d-none" id="saved-item-route-2">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <div class="d-flex align-items-center gap-2 flex-wrap">
+                            <h3 class="fw-bold m-0" style="font-size: 17px; color: #111111;">Shahbag → Motijheel (Route
+                                2)</h3>
+                            <span class="badge bg-light text-dark border px-2 py-0.5 rounded-pill fw-semibold"
+                                style="font-size: 11px;">Lowest Cost</span>
+                        </div>
+                        <button aria-label="Remove saved route"
+                            class="btn btn-sm btn-outline-danger border-0 d-flex align-items-center gap-1 py-1 px-2 rounded-2"
+                            onclick="removeSavedRoute('route-2')" style="font-size: 12px; font-weight: 600;"
+                            type="button">
+                            <i class="bi bi-trash3"></i>
+                            <span>Remove</span>
+                        </button>
+                    </div>
+                    <div class="d-flex align-items-center gap-2 flex-wrap mb-3">
+                        <span class="route-step-pill bus">
+                            <i class="bi bi-bus-front"></i> Azimpur-Motijheel Express
+                        </span>
+                        <i class="bi bi-arrow-right text-muted" style="font-size: 12px;"></i>
+                        <span class="route-step-pill">
+                            <i class="bi bi-person-walking"></i> Walk
+                        </span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center pt-2 border-top text-muted"
+                        style="font-size: 12.5px; border-color: #F3F4F6 !important;">
+                        <div class="d-flex gap-3">
+                            <span><strong class="text-dark">35 min</strong></span>
+                            <span><strong class="text-dark">৳30</strong> fare</span>
+                            <span><strong>1</strong> transfer</span>
+                        </div>
+                        <button class="btn btn-sm btn-dark px-3 py-1 rounded-pill fw-semibold"
+                            onclick="loadSavedRouteInPlanner('Shahbag', 'Motijheel')" style="font-size: 12px;"
+                            type="button">
+                            Open in Planner
+                        </button>
+                    </div>
+                </div>
+                <!-- DYNAMIC ROUTE 3 CARD CONTAINER (Initially Hidden) -->
+                <div class="uber-card position-relative saved-route-card d-none" id="saved-item-route-3">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <div class="d-flex align-items-center gap-2 flex-wrap">
+                            <h3 class="fw-bold m-0" style="font-size: 17px; color: #111111;">Shahbag → Motijheel (Route
+                                3)</h3>
+                            <span class="badge bg-light text-dark border px-2 py-0.5 rounded-pill fw-semibold"
+                                style="font-size: 11px;">Less Walking</span>
+                        </div>
+                        <button aria-label="Remove saved route"
+                            class="btn btn-sm btn-outline-danger border-0 d-flex align-items-center gap-1 py-1 px-2 rounded-2"
+                            onclick="removeSavedRoute('route-3')" style="font-size: 12px; font-weight: 600;"
+                            type="button">
+                            <i class="bi bi-trash3"></i>
+                            <span>Remove</span>
+                        </button>
+                    </div>
+                    <div class="d-flex align-items-center gap-2 flex-wrap mb-3">
+                        <span class="route-step-pill bus">
+                            <i class="bi bi-bus-front"></i> Feeder Bus
+                        </span>
+                        <i class="bi bi-arrow-right text-muted" style="font-size: 12px;"></i>
+                        <span class="route-step-pill metro">
+                            <i class="bi bi-train-front"></i> Metro Line 6
+                        </span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center pt-2 border-top text-muted"
+                        style="font-size: 12.5px; border-color: #F3F4F6 !important;">
+                        <div class="d-flex gap-3">
+                            <span><strong class="text-dark">31 min</strong></span>
+                            <span><strong class="text-dark">৳50</strong> fare</span>
+                            <span><strong>1</strong> transfer</span>
+                        </div>
+                        <button class="btn btn-sm btn-dark px-3 py-1 rounded-pill fw-semibold"
+                            onclick="loadSavedRouteInPlanner('Shahbag', 'Motijheel')" style="font-size: 12px;"
+                            type="button">
+                            Open in Planner
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- EMPTY STATE FOR SAVED TAB (Hidden initially, appears if all removed) -->
+            <div class="d-none uber-card p-5 text-center my-4" id="saved-empty-state">
+                <div class="d-inline-flex align-items-center justify-content-center mb-3"
+                    style="width: 64px; height: 64px; border-radius: 50%; background-color: #F3F4F6; color: #111111; font-size: 26px;">
+                    <i class="bi bi-bookmark-x"></i>
+                </div>
+                <h3 class="fw-bold mb-1" style="font-size: 18px; color: #111111;">No saved trips yet</h3>
+                <p class="text-muted mx-auto mb-4" style="max-width: 360px; font-size: 13.5px;">
+                    Save routes from the Plan Trip tab by tapping the bookmark icon to quickly access your daily
+                    commutes here.
+                </p>
+                <button class="btn btn-uber-black mx-auto" onclick="switchTab('tab-plan')" style="max-width: 220px;"
+                    type="button">
+                    <i class="bi bi-signpost-2"></i>
+                    <span>Explore Routes</span>
+                </button>
+            </div>
+        </section>
+    </main>
+    <!-- BOTTOM NAVIGATION BAR (Fixed Interactive z-50 Tab Switcher) -->
+    <nav aria-label="Main App Navigation" class="mobile-bottom-nav">
+        <!-- Tab 1: Plan Trip -->
+        <button aria-controls="tab-plan" aria-label="Plan Trip Tab" class="mobile-nav-item active" id="nav-btn-plan"
+            onclick="switchTab('tab-plan')" type="button">
+            <i class="bi bi-signpost-2" style="font-size: 19px;"></i>
+            <span>Plan Trip</span>
+        </button>
+        <!-- Tab 2: Transit Lines -->
+        <button aria-controls="tab-lines" aria-label="Transit Lines Tab" class="mobile-nav-item" id="nav-btn-lines"
+            onclick="switchTab('tab-lines')" type="button">
+            <i class="bi bi-train-front" style="font-size: 19px;"></i>
+            <span>Transit Lines</span>
+        </button>
+        <!-- Tab 3: Saved -->
+        <button aria-controls="tab-saved" aria-label="Saved Routes Tab" class="mobile-nav-item" id="nav-btn-saved"
+            onclick="switchTab('tab-saved')" type="button">
+            <i class="bi bi-bookmark" id="nav-saved-icon" style="font-size: 19px;"></i>
+            <span>Saved</span>
+            <!-- Dynamic saved count badge -->
+            <span class="badge-nav-counter" id="nav-saved-badge">2</span>
+        </button>
+    </nav>
+    <!-- VANILLA JAVASCRIPT INTERACTIONS -->
+    <script>
+        // State of saved routes
+        let savedRoutesCount = 2; // Initial state: 'route-rec' and 'route-uttara'
+
+        // Show temporary toast notification
+        function showToast(msg) {
+            const toast = document.getElementById('global-toast');
+            const label = document.getElementById('toast-message');
+            if (!toast || !label) return;
+            label.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2500);
+        }
+
+        // Switch between the 3 main bottom tabs
+        function switchTab(tabId) {
+            const tabs = ['tab-plan', 'tab-lines', 'tab-saved'];
+            const navButtons = {
+                'tab-plan': document.getElementById('nav-btn-plan'),
+                'tab-lines': document.getElementById('nav-btn-lines'),
+                'tab-saved': document.getElementById('nav-btn-saved')
+            };
+
+            tabs.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    if (id === tabId) {
+                        el.classList.add('active-tab');
+                    } else {
+                        el.classList.remove('active-tab');
+                    }
+                }
+            });
+
+            Object.keys(navButtons).forEach(id => {
+                const btn = navButtons[id];
+                if (btn) {
+                    if (id === tabId) {
+                        btn.classList.add('active');
+                    } else {
+                        btn.classList.remove('active');
+                    }
+                }
+            });
+
+            // Scroll smoothly to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Update Saved Counter across badge and headers
+        function updateSavedBadge() {
+            const badge = document.getElementById('nav-saved-badge');
+            const headerBadge = document.getElementById('saved-header-counter');
+            const emptyState = document.getElementById('saved-empty-state');
+            const cardsList = document.getElementById('saved-cards-list');
+            const navIcon = document.getElementById('nav-saved-icon');
+
+            if (badge) {
+                badge.textContent = savedRoutesCount;
+                badge.style.display = savedRoutesCount > 0 ? 'flex' : 'none';
+            }
+
+            if (headerBadge) {
+                headerBadge.textContent = savedRoutesCount === 1 ? '1 Saved Journey' : `${savedRoutesCount} Saved Journeys`;
+            }
+
+            if (navIcon) {
+                if (savedRoutesCount > 0) {
+                    navIcon.className = 'bi bi-bookmark-fill';
+                } else {
+                    navIcon.className = 'bi bi-bookmark';
+                }
+            }
+
+            if (emptyState && cardsList) {
+                if (savedRoutesCount === 0) {
+                    emptyState.classList.remove('d-none');
+                } else {
+                    emptyState.classList.add('d-none');
+                }
+            }
+        }
+
+        // Toggle save route from Plan Trip tab
+        function toggleSaveRoute(button, routeKey) {
+            const icon = button.querySelector('i');
+            const isSaved = button.classList.contains('saved');
+            const savedCardEl = document.getElementById(`saved-item-${routeKey}`);
+
+            if (isSaved) {
+                // Unsave
+                button.classList.remove('saved');
+                if (icon) {
+                    icon.className = 'bi bi-bookmark';
+                }
+                if (savedCardEl) {
+                    savedCardEl.classList.add('d-none');
+                }
+                savedRoutesCount = Math.max(0, savedRoutesCount - 1);
+                showToast('Route removed from Saved tab');
+            } else {
+                // Save
+                button.classList.add('saved');
+                if (icon) {
+                    icon.className = 'bi bi-bookmark-fill';
+                }
+                if (savedCardEl) {
+                    savedCardEl.classList.remove('d-none');
+                }
+                savedRoutesCount++;
+                showToast('Route saved to Saved tab!');
+            }
+
+            updateSavedBadge();
+        }
+
+        // Remove saved route directly from the Saved Tab
+        function removeSavedRoute(routeKey) {
+            const targetCard = document.getElementById(`saved-item-${routeKey}`);
+            if (targetCard) {
+                targetCard.style.opacity = '0';
+                targetCard.style.transform = 'translateY(-10px)';
+                targetCard.style.transition = 'all 0.2s ease';
+
+                setTimeout(() => {
+                    targetCard.classList.add('d-none');
+                    targetCard.style.opacity = '1';
+                    targetCard.style.transform = 'none';
+
+                    // Sync bookmark button on Plan tab if present
+                    const planBtn = document.getElementById(`btn-save-${routeKey}`);
+                    if (planBtn) {
+                        planBtn.classList.remove('saved');
+                        const icon = planBtn.querySelector('i');
+                        if (icon) icon.className = 'bi bi-bookmark';
+                    }
+
+                    savedRoutesCount = Math.max(0, savedRoutesCount - 1);
+                    updateSavedBadge();
+                    showToast('Route removed');
+                }, 200);
+            }
+        }
+
+        // Open route in planner
+        function loadSavedRouteInPlanner(origin, dest) {
+            const textarea = document.getElementById('journey-query');
+            if (textarea) {
+                textarea.value = `${origin} to ${dest} via MRT Line 6, fastest`;
+            }
+            switchTab('tab-plan');
+            showToast(`Loaded ${origin} → ${dest} in planner`);
+        }
+
+        // Filter Transit lines
+        function filterLines(category, btn) {
+            const chips = document.querySelectorAll('#line-filters-wrap .line-filter-chip');
+            chips.forEach(c => c.classList.remove('active'));
+            btn.classList.add('active');
+
+            const items = document.querySelectorAll('#transit-lines-container .line-item-card');
+            items.forEach(item => {
+                const itemCat = item.getAttribute('data-category');
+                if (category === 'all' || itemCat === category) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        // Toggle profile popover dropdown
+        function toggleProfileDropdown(e) {
+            if (e) e.stopPropagation();
+            const menu = document.getElementById('profile-dropdown-menu');
+            const btn = document.getElementById('profile-avatar-btn');
+            if (!menu) return;
+
+            const isClosed = menu.classList.contains('d-none');
+            if (isClosed) {
+                menu.classList.remove('d-none');
+                if (btn) btn.setAttribute('aria-expanded', 'true');
+            } else {
+                menu.classList.add('d-none');
+                if (btn) btn.setAttribute('aria-expanded', 'false');
+            }
+        }
+
+        // Close dropdown on outside click
+        document.addEventListener('click', function (e) {
+            const container = document.getElementById('profile-dropdown-container');
+            const menu = document.getElementById('profile-dropdown-menu');
+            const btn = document.getElementById('profile-avatar-btn');
+            if (container && !container.contains(e.target) && menu && !menu.classList.contains('d-none')) {
+                menu.classList.add('d-none');
+                if (btn) btn.setAttribute('aria-expanded', 'false');
+            }
+        });
+
+        // Close on Escape key
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') {
+                const menu = document.getElementById('profile-dropdown-menu');
+                const btn = document.getElementById('profile-avatar-btn');
+                if (menu && !menu.classList.contains('d-none')) {
+                    menu.classList.add('d-none');
+                    if (btn) btn.setAttribute('aria-expanded', 'false');
+                }
+            }
+        });
+
+        // Handle profile view
+        function viewProfile(e) {
+            if (e) e.stopPropagation();
+            const menu = document.getElementById('profile-dropdown-menu');
+            if (menu) menu.classList.add('d-none');
+            showToast('Logged in as Munjil Rahman (munjil@email.com)');
+        }
+
+        // Handle logout action
+        function handleLogout(e) {
+            if (e) e.stopPropagation();
+            const menu = document.getElementById('profile-dropdown-menu');
+            if (menu) menu.classList.add('d-none');
+            alert('Logging out... Redirecting to Authentication page.');
+        }
+
+        // Toggle collapsible drawer sections
+        function toggleAccordion(contentId, iconId) {
+            const content = document.getElementById(contentId);
+            const icon = document.getElementById(iconId);
+            if (!content) return;
+
+            const isHidden = content.classList.contains('d-none');
+            if (isHidden) {
+                content.classList.remove('d-none');
+                if (icon) {
+                    icon.classList.remove('bi-chevron-down');
+                    icon.classList.add('bi-chevron-up');
+                }
+            } else {
+                content.classList.add('d-none');
+                if (icon) {
+                    icon.classList.remove('bi-chevron-up');
+                    icon.classList.add('bi-chevron-down');
+                }
+            }
+        }
+
+        // Toggle chip button active styling
+        function toggleChip(button) {
+            button.classList.toggle('active');
+        }
+
+        // Use current location simulation
+        function useCurrentLocation() {
+            const label = document.getElementById('gps-label');
+            const icon = document.getElementById('gps-icon');
+            const textarea = document.getElementById('journey-query');
+
+            icon.className = 'spinner-border spinner-border-sm text-dark';
+            label.textContent = 'Locating GPS...';
+
+            setTimeout(() => {
+                textarea.value = 'Current Location (Shahbag Roundabout) to Motijheel via MRT';
+                icon.className = 'bi bi-check-circle-fill text-success';
+                label.textContent = 'Shahbag Roundabout';
+
+                setTimeout(() => {
+                    icon.className = 'bi bi-geo-alt-fill text-dark';
+                    label.textContent = 'Use My Current Location';
+                }, 3000);
+            }, 750);
+        }
+
+        // Route notice modal/toast helper
+        function showRouteNotice(routeName) {
+            showToast(`Showing detailed transit schedule for ${routeName}`);
+        }
+
+        // Simulate AI Multi-step Planning State
+        function simulateAiPlanner() {
+            const loadingBox = document.getElementById('ai-loading-box');
+            const resultsBox = document.getElementById('results-container');
+
+            if (!loadingBox || !resultsBox) return;
+
+            loadingBox.classList.remove('d-none');
+            resultsBox.style.opacity = '0.35';
+            resultsBox.style.pointerEvents = 'none';
+
+            loadingBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            setTimeout(() => {
+                loadingBox.classList.add('d-none');
+                resultsBox.style.opacity = '1';
+                resultsBox.style.pointerEvents = 'auto';
+                showToast('3 multimodal routes generated successfully');
+            }, 1400);
+        }
+
+        // Initial setup on load
+        document.addEventListener('DOMContentLoaded', () => {
+            updateSavedBadge();
+        });
+    </script>
+</body>
+
+</html>
