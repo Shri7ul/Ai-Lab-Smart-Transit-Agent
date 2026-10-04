@@ -93,6 +93,7 @@ def create_files():
 
     for file in FILES:
         path = ROOT_DIR / file
+        path.parent.mkdir(parents=True, exist_ok=True)
 
         if not path.exists():
             path.touch()
