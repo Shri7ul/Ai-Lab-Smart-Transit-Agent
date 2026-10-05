@@ -1,0 +1,10 @@
+networkx
+numpy
+pandas
+matplotlib
+python-dotenv
+google-genai
+requests
+Flask
+gunicorn
+supabase
