@@ -66,7 +66,7 @@ def pareto_optimal_mask(df: pd.DataFrame,
                 break
     return is_optimal
 
-def rank_and_evaluate_routes(routes: List[Route], weights: Dict[str, float] | None = None) -> pd.DataFrame:
+def rank_and_evaluate_routes(routes: List[Route], weights: Dict[str, float] = None) -> pd.DataFrame:
     """End-to-end evaluation: metrics -> score -> pareto -> rank."""
     if not routes:
         return pd.DataFrame()
